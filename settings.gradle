@@ -1,0 +1,3 @@
+rootProject.name = 'version-gate'
+include 'common'
+
