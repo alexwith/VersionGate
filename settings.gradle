@@ -1,3 +1,5 @@
 rootProject.name = 'version-gate'
+
 include 'common'
+include 'standalone'
 

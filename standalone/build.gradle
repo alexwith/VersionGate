@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+group 'net.versiongate'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.eclipse.collections:eclipse-collections-api:11.1.0")
+    implementation("org.eclipse.collections:eclipse-collections:11.1.0")
+}
