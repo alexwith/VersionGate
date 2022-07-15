@@ -49,7 +49,7 @@ public class ConnectionContext {
     }
 
     public boolean isCompression() {
-        return this.compression;
+        return false;
     }
 
     public int getCompressionThreshold() {
@@ -75,6 +75,7 @@ public class ConnectionContext {
 
         while (readBuffer.remaining() > 0) {
             readBuffer.mark();
+
             try {
                 final int packetLength = ProtocolUtils.readVarInt(readBuffer);
                 final int packetEnd = readBuffer.position() + packetLength;
@@ -84,7 +85,7 @@ public class ConnectionContext {
 
                 readBuffer.limit(packetEnd);
 
-                var content = context.getContentBuffer().clear();
+                ByteBuffer content = context.getContentBuffer().clear();
                 if (this.protocolFormat.read(this, readBuffer, content, context)) {
                     content = readBuffer;
                 } else {
@@ -96,7 +97,9 @@ public class ConnectionContext {
                 }
 
                 final int packetId = ProtocolUtils.readVarInt(content);
+                final String packetHexId = String.format("0x%02X", packetId);
                 try {
+                    System.out.println("process this: " + packetHexId);
                     this.handler.process(this, packetId, content);
                 } catch (Exception e) {
                     e.printStackTrace();

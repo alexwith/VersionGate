@@ -14,16 +14,21 @@ import net.versiongate.standalone.worker.Worker;
  * Credit to TheMode for inspiration for this simple proxy base / copy (https://github.com/TheMode/Paxy)
  */
 public class Server {
-    private final Worker worker;
+    private final Worker[] workers = new Worker[WORKER_COUNT];
+
+    private int workerIndex;
 
     public static final int SOCKET_BUFFER_SIZE = 262143;
     public static final int MAX_PACKET_SIZE = 2097151;
 
+    private static final int WORKER_COUNT = Runtime.getRuntime().availableProcessors() * 2;
     private static final SocketAddress STANDALONE_ADDRESS = new InetSocketAddress("0.0.0.0", 25566);
     private static final SocketAddress TARGET_ADDRESS = new InetSocketAddress("0.0.0.0", 25565);
 
     public Server() throws IOException {
-        this.worker = new Worker();
+        for (int i = 0; i < this.workers.length; i++) {
+            this.workers[i] = new Worker();
+        }
     }
 
     public void start() throws IOException {
@@ -50,7 +55,6 @@ public class Server {
             }
 
             final SocketChannel client = serverSocket.accept();
-            System.out.println("connecting to target server");
             final SocketChannel server;
             try {
                 server = SocketChannel.open(TARGET_ADDRESS);
@@ -59,12 +63,19 @@ public class Server {
                 e.printStackTrace();
                 continue;
             }
-            System.out.println("connected to target server");
-            this.worker.handleConnection(client, server);
+
+            final Worker worker = this.findWorker();
+            worker.handleConnection(client, server);
 
             System.out.println("New connection");
         }
 
         keys.clear();
     }
+
+    private Worker findWorker() {
+        this.workerIndex = ++this.workerIndex % WORKER_COUNT;
+        return this.workers[this.workerIndex];
+    }
+
 }

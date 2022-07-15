@@ -93,6 +93,6 @@ public class Worker {
         final Socket socket = channel.socket();
         socket.setSendBufferSize(Server.SOCKET_BUFFER_SIZE);
         socket.setReceiveBufferSize(Server.SOCKET_BUFFER_SIZE);
-        socket.setTcpNoDelay(false);
+        socket.setTcpNoDelay(true);
     }
 }
