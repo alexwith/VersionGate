@@ -2,6 +2,8 @@ rootProject.name = 'version-gate'
 
 include 'common'
 include 'standalone'
+include 'api'
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 enableFeaturePreview('VERSION_CATALOGS')
+

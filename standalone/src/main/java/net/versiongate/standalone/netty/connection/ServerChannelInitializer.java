@@ -1,7 +1,7 @@
 package net.versiongate.standalone.netty.connection;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,7 +32,7 @@ public class ServerChannelInitializer extends ChannelInitializer<Channel> {
             final byte[] bytes = new byte[readBuffer.readableBytes()];
             readBuffer.readBytes(bytes);
 
-            final ByteBuf writeBuffer = UnpooledByteBufAllocator.DEFAULT.buffer();
+            final ByteBuf writeBuffer = Unpooled.buffer();
             this.channel.writeAndFlush(writeBuffer.writeBytes(bytes));
         }
     }

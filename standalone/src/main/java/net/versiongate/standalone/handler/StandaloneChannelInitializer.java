@@ -13,11 +13,11 @@ public class StandaloneChannelInitializer extends PlatformChannelInitializer {
 
     @Override
     public void pipelineEncoder(ChannelPipeline pipeline) {
-        pipeline.addLast(ENCODER_NAME, new Encoder());
+        pipeline.addLast(ENCODER_NAME, new DefaultEncoder());
     }
 
     @Override
     public void pipelineDecoder(ChannelPipeline pipeline) {
-        pipeline.addBefore(NettyChannelInitializer.DECODER_NAME, DECODER_NAME, new Decoder());
+        pipeline.addBefore(NettyChannelInitializer.DECODER_NAME, DECODER_NAME, new DefaultDecoder());
     }
 }

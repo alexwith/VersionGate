@@ -1,6 +1,7 @@
 package net.versiongate.common.platform;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
@@ -53,19 +54,43 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
         this.pipelineDecoder(pipeline);
     }
 
-    public static class Decoder extends MessageToMessageDecoder<ByteBuf> {
+    public static class DefaultEncoder extends MessageToMessageEncoder<ByteBuf> {
 
         @Override
-        protected void decode(ChannelHandlerContext context, ByteBuf message, List<Object> out) throws Exception {
-            out.add(message.retain());
+        protected void encode(ChannelHandlerContext context, ByteBuf message, List<Object> out) {
+            //out.add(message.retain());
+
+            final ByteBuf translationBuffer = Unpooled.buffer();
+            translationBuffer.writeBytes(message);
+
+            try {
+                // translate
+                out.add(translationBuffer.retain());
+            } finally {
+                translationBuffer.release();
+            }
         }
     }
 
-    public static class Encoder extends MessageToMessageEncoder<ByteBuf> {
+    public static class DefaultDecoder extends MessageToMessageDecoder<ByteBuf> {
 
         @Override
-        protected void encode(ChannelHandlerContext context, ByteBuf message, List<Object> out) throws Exception {
-            out.add(message.retain());
+        protected void decode(ChannelHandlerContext context, ByteBuf message, List<Object> out) {
+            //out.add(message.retain());
+
+            final ByteBuf translationBuffer = Unpooled.buffer();
+            translationBuffer.writeBytes(message);
+
+            try {
+                /*final int packetLength = ProtocolUtil.readVarInt(message);
+                final int packetId = ProtocolUtil.readVarInt(message);
+                System.out.println("packet: " + ProtocolUtil.toProtocolHex(packetId));*/
+
+                // translate
+                out.add(translationBuffer.retain());
+            } finally {
+                translationBuffer.release();
+            }
         }
     }
 }
