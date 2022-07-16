@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'groovy'
+    id 'checkstyle'
 }
 
 group 'net.versiongate'
@@ -13,6 +13,11 @@ repositories {
 allprojects {
     apply {
         plugin("java")
+        plugin("checkstyle")
+    }
+
+    checkstyle {
+        toolVersion = "9.3"
     }
 
     repositories {
