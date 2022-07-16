@@ -5,8 +5,10 @@ import io.netty.channel.ChannelInitializer;
 
 public class NettyChannelInitializer extends ChannelInitializer<Channel> {
 
+    private static final String DECODER_NAME = "minecraft-decoder";
+
     @Override
     protected void initChannel(Channel channel) {
-        channel.pipeline().addLast(new MinecraftDecoder());
+        channel.pipeline().addLast(DECODER_NAME, new MinecraftDecoder());
     }
 }

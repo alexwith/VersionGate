@@ -5,5 +5,5 @@ public enum State {
     HANDSHAKE(),
     STATUS(),
     LOGIN(),
-    PLAY();
+    PLAY()
 }

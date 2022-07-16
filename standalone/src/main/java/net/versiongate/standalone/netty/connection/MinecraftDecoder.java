@@ -22,7 +22,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
     private final Map<ChannelHandlerContext, ConnectionContext> connectionContexts = new ConcurrentHashMap<>();
 
     @Override
-    public void channelRead(ChannelHandlerContext context, Object message) throws Exception {
+    public void channelRead(ChannelHandlerContext context, Object message) {
         final ByteBuf readBuffer = (ByteBuf) message;
         final ConnectionContext connectionContext = this.connectionContexts.computeIfAbsent(context, ($) -> new ConnectionContext());
         final State state = connectionContext.getState();
