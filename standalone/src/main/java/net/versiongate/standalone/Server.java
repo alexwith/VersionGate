@@ -11,7 +11,7 @@ import java.util.Set;
 import net.versiongate.standalone.worker.Worker;
 
 /**
- * Credit to TheMode for inspiration for this simple proxy base / copy (https://github.com/TheMode/Paxy)
+ * Credit to TheMode for inspiration for this simple proxy base (https://github.com/TheMode/Paxy)
  */
 public class Server {
     private final Worker[] workers = new Worker[WORKER_COUNT];
@@ -19,7 +19,6 @@ public class Server {
     private int workerIndex;
 
     public static final int SOCKET_BUFFER_SIZE = 262143;
-    public static final int MAX_PACKET_SIZE = 2097151;
 
     private static final int WORKER_COUNT = Runtime.getRuntime().availableProcessors() * 2;
     private static final SocketAddress STANDALONE_ADDRESS = new InetSocketAddress("0.0.0.0", 25566);
@@ -40,6 +39,7 @@ public class Server {
         serverSocket.socket().setReceiveBufferSize(SOCKET_BUFFER_SIZE);
 
         System.out.println("Server started");
+
         while (true) {
             this.tick(selector, serverSocket);
         }
@@ -55,15 +55,7 @@ public class Server {
             }
 
             final SocketChannel client = serverSocket.accept();
-            final SocketChannel server;
-            try {
-                server = SocketChannel.open(TARGET_ADDRESS);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                continue;
-            }
-
+            final SocketChannel server = SocketChannel.open(TARGET_ADDRESS);
             final Worker worker = this.findWorker();
             worker.handleConnection(client, server);
 

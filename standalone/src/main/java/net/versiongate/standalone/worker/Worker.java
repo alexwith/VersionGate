@@ -11,8 +11,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import net.versiongate.standalone.Server;
 import net.versiongate.standalone.connection.ConnectionContext;
-import net.versiongate.standalone.connection.ProtocolHandler;
-import net.versiongate.standalone.enums.PacketBound;
 
 public class Worker {
     private final Selector selector = Selector.open();
@@ -29,11 +27,8 @@ public class Worker {
     }
 
     public void handleConnection(SocketChannel client, SocketChannel server) throws IOException {
-        final ConnectionContext clientContext = new ConnectionContext(server, ProtocolHandler.CLIENT, PacketBound.IN);
-        final ConnectionContext serverContext = new ConnectionContext(client, ProtocolHandler.SERVER, PacketBound.OUT);
-
-        clientContext.setTargetContext(serverContext);
-        serverContext.setTargetContext(clientContext);
+        final ConnectionContext clientContext = new ConnectionContext(server);
+        final ConnectionContext serverContext = new ConnectionContext(client);
 
         this.connectionContexts.put(client, clientContext);
         this.connectionContexts.put(server, serverContext);
@@ -61,14 +56,12 @@ public class Worker {
             final ConnectionContext connectionContext = this.connectionContexts.get(channel);
             try {
                 final ByteBuffer readBuffer = context.getReadBuffer();
-                connectionContext.applyCache(readBuffer);
-
                 if (channel.read(readBuffer) == -1) {
                     throw new IOException("Disconnected");
                 }
 
                 readBuffer.flip();
-                connectionContext.processPackets(context);
+                connectionContext.write(readBuffer);
             } catch (IOException e) {
                 e.printStackTrace();
 

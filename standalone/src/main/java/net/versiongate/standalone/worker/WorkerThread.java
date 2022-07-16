@@ -13,10 +13,10 @@ public class WorkerThread extends Thread {
 
     protected static void start(Consumer<WorkerContext> runnable) {
         new WorkerThread(() -> {
-            WorkerContext workerContext = new WorkerContext();
+            final WorkerContext context = new WorkerContext();
             while (true) {
                 try {
-                    runnable.accept(workerContext);
+                    runnable.accept(context);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
