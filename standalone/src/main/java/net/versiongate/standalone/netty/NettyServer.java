@@ -7,6 +7,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import net.versiongate.standalone.Main;
+import net.versiongate.standalone.handler.StandaloneChannelInitializer;
 import net.versiongate.standalone.netty.connection.NettyChannelInitializer;
 
 public class NettyServer {
@@ -19,7 +20,8 @@ public class NettyServer {
             final ServerBootstrap bootstrap = new ServerBootstrap()
                 .group(BOSS_GROUP, WORKER_GROUP)
                 .channel(NioServerSocketChannel.class)
-                .childHandler(new NettyChannelInitializer())
+                //.childHandler(new NettyChannelInitializer())
+                .childHandler(new StandaloneChannelInitializer(new NettyChannelInitializer())) // fake injection for standalone
                 .option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 

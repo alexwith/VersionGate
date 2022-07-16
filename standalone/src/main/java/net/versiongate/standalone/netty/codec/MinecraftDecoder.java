@@ -1,4 +1,4 @@
-package net.versiongate.standalone.netty.connection;
+package net.versiongate.standalone.netty.codec;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -16,6 +16,8 @@ import java.util.function.Consumer;
 import net.versiongate.common.util.ProtocolUtil;
 import net.versiongate.standalone.Main;
 import net.versiongate.standalone.netty.NettyServer;
+import net.versiongate.standalone.netty.connection.ConnectionContext;
+import net.versiongate.standalone.netty.connection.ServerChannelInitializer;
 import net.versiongate.standalone.netty.enums.State;
 
 public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
@@ -33,19 +35,9 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
                 return;
             }
 
-            final int protocolVersion = ProtocolUtil.readVarInt(readBuffer);
-            final String serverAddress = ProtocolUtil.readString(readBuffer, 255);
-            final int serverPort = readBuffer.readUnsignedShort();
-            final int nextState = ProtocolUtil.readVarInt(readBuffer);
-            final State nextStateEnum = nextState == 1 ? State.STATUS : State.LOGIN;
-
-            this.handshake(context, connectionContext, readBuffer, nextStateEnum, (writeBuffer) -> {
+            this.handshake(context, connectionContext, readBuffer, (writeBuffer) -> {
                 ProtocolUtil.writeVarInt(writeBuffer, packetLength);
                 ProtocolUtil.writeVarInt(writeBuffer, packetId);
-                ProtocolUtil.writeVarInt(writeBuffer, protocolVersion);
-                ProtocolUtil.writeString(writeBuffer, serverAddress);
-                ProtocolUtil.writeVarShort(writeBuffer, serverPort);
-                ProtocolUtil.writeVarInt(writeBuffer, nextState);
             });
         } else {
             final Channel target = connectionContext.getTarget();
@@ -57,11 +49,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
         }
     }
 
-    private void handshake(ChannelHandlerContext context,
-                           ConnectionContext connectionContext,
-                           ByteBuf readBuffer,
-                           State nextState,
-                           Consumer<ByteBuf> replacer) {
+    private void handshake(ChannelHandlerContext context, ConnectionContext connectionContext, ByteBuf readBuffer, Consumer<ByteBuf> replacer) {
         final Bootstrap bootstrap = new Bootstrap()
             .group(NettyServer.WORKER_GROUP)
             .channel(NioSocketChannel.class)
@@ -81,7 +69,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
 
                 future.channel().writeAndFlush(writeBuffer);
                 connectionContext.setTarget(channelFuture.channel());
-                connectionContext.setState(nextState);
+                connectionContext.setState(State.LOGIN); // we don't really care since this is a test environment
             } else {
                 System.out.println("Disconnect");
                 future.cause().printStackTrace();

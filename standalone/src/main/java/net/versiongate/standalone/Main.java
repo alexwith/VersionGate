@@ -10,7 +10,6 @@ public class Main {
     public static final SocketAddress TARGET_ADDRESS = new InetSocketAddress("0.0.0.0", 25565);
 
     public static void main(String[] args) throws Exception {
-        //final NioServer server = new NioServer();
         final NettyServer server = new NettyServer();
         server.start();
     }
