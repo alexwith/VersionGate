@@ -10,6 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation("org.eclipse.collections:eclipse-collections-api:11.1.0")
     implementation("org.eclipse.collections:eclipse-collections:11.1.0")
+    implementation('io.netty:netty-all:4.1.77.Final')
 }

@@ -1,4 +1,4 @@
-package net.versiongate.standalone.connection;
+package net.versiongate.standalone.nio.connection;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

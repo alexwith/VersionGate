@@ -10,5 +10,5 @@ repositories {
 }
 
 dependencies {
-
+    implementation('io.netty:netty-buffer:4.1.77.Final')
 }

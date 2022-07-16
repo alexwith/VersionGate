@@ -1,4 +1,4 @@
-package net.versiongate.standalone.worker;
+package net.versiongate.standalone.nio.worker;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;

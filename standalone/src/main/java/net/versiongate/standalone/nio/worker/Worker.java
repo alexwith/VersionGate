@@ -1,4 +1,4 @@
-package net.versiongate.standalone.worker;
+package net.versiongate.standalone.nio.worker;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -9,8 +9,8 @@ import java.nio.channels.SocketChannel;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import net.versiongate.standalone.Server;
-import net.versiongate.standalone.connection.ConnectionContext;
+import net.versiongate.standalone.nio.NioServer;
+import net.versiongate.standalone.nio.connection.ConnectionContext;
 
 public class Worker {
     private final Selector selector = Selector.open();
@@ -61,6 +61,7 @@ public class Worker {
                 }
 
                 readBuffer.flip();
+
                 connectionContext.write(readBuffer);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,8 +85,8 @@ public class Worker {
         channel.register(this.selector, SelectionKey.OP_READ);
 
         final Socket socket = channel.socket();
-        socket.setSendBufferSize(Server.SOCKET_BUFFER_SIZE);
-        socket.setReceiveBufferSize(Server.SOCKET_BUFFER_SIZE);
+        socket.setSendBufferSize(NioServer.SOCKET_BUFFER_SIZE);
+        socket.setReceiveBufferSize(NioServer.SOCKET_BUFFER_SIZE);
         socket.setTcpNoDelay(true);
     }
 }

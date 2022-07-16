@@ -1,39 +1,30 @@
-package net.versiongate.standalone;
+package net.versiongate.standalone.nio;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
-import net.versiongate.standalone.worker.Worker;
+import net.versiongate.standalone.Main;
+import net.versiongate.standalone.nio.worker.Worker;
 
 /**
  * Credit to TheMode for inspiration for this simple proxy base (https://github.com/TheMode/Paxy)
  */
-public class Server {
-    private final Worker[] workers = new Worker[WORKER_COUNT];
-
-    private int workerIndex;
+public class NioServer {
+    private final Worker worker;
 
     public static final int SOCKET_BUFFER_SIZE = 262143;
 
-    private static final int WORKER_COUNT = Runtime.getRuntime().availableProcessors() * 2;
-    private static final SocketAddress STANDALONE_ADDRESS = new InetSocketAddress("0.0.0.0", 25566);
-    private static final SocketAddress TARGET_ADDRESS = new InetSocketAddress("0.0.0.0", 25565);
-
-    public Server() throws IOException {
-        for (int i = 0; i < this.workers.length; i++) {
-            this.workers[i] = new Worker();
-        }
+    public NioServer() throws IOException {
+        this.worker = new Worker();
     }
 
     public void start() throws IOException {
         final Selector selector = Selector.open();
         final ServerSocketChannel serverSocket = ServerSocketChannel.open();
-        serverSocket.bind(STANDALONE_ADDRESS);
+        serverSocket.bind(Main.STANDALONE_ADDRESS);
         serverSocket.configureBlocking(false);
         serverSocket.register(selector, SelectionKey.OP_ACCEPT);
         serverSocket.socket().setReceiveBufferSize(SOCKET_BUFFER_SIZE);
@@ -55,19 +46,13 @@ public class Server {
             }
 
             final SocketChannel client = serverSocket.accept();
-            final SocketChannel server = SocketChannel.open(TARGET_ADDRESS);
-            final Worker worker = this.findWorker();
-            worker.handleConnection(client, server);
+            final SocketChannel server = SocketChannel.open(Main.TARGET_ADDRESS);
+
+            this.worker.handleConnection(client, server);
 
             System.out.println("New connection");
         }
 
         keys.clear();
     }
-
-    private Worker findWorker() {
-        this.workerIndex = ++this.workerIndex % WORKER_COUNT;
-        return this.workers[this.workerIndex];
-    }
-
 }
