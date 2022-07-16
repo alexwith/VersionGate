@@ -3,3 +3,5 @@ rootProject.name = 'version-gate'
 include 'common'
 include 'standalone'
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+

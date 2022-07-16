@@ -1,0 +1,11 @@
+[versions]
+ec-ver = "11.1.0"
+vavr-ver = "0.10.4"
+
+[libraries]
+ec = { module="org.eclipse.collections:eclipse-collections", version.ref="ec-ver" }
+ec-api = { module="org.eclipse.collections:eclipse-collections-api", version.ref="ec-ver" }
+vavr = { module="io.vavr:vavr", version.ref="vavr-ver" }
+
+[bundles]
+common = ["ec-api", "ec", "vavr"]
