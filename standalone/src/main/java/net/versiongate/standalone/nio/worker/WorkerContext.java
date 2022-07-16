@@ -1,11 +1,11 @@
-package net.versiongate.standalone.worker;
+package net.versiongate.standalone.nio.worker;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import net.versiongate.standalone.Server;
+import net.versiongate.standalone.nio.NioServer;
 
 public class WorkerContext {
-    private final ByteBuffer readBuffer = allocate(Server.SOCKET_BUFFER_SIZE);
+    private final ByteBuffer readBuffer = allocate(NioServer.SOCKET_BUFFER_SIZE);
 
     public ByteBuffer getReadBuffer() {
         return this.readBuffer;
