@@ -7,7 +7,6 @@ public class ConnectionContext {
     private Channel target;
     private State state = State.HANDSHAKE;
 
-
     public Channel getTarget() {
         return this.target;
     }
