@@ -26,8 +26,8 @@ public class Connection implements IConnection {
             return;
         }
 
-        final int packetLength = ProtocolUtil.readVarInt(buffer);
-        final int packetId = ProtocolUtil.readVarInt(buffer);
+        final int packetLength = 0;//ProtocolUtil.readVarInt(buffer);
+        final int packetId = 0;//ProtocolUtil.readVarInt(buffer);
         final IPacket packet = new Packet(packetId, packetLength, buffer);
         System.out.println(ProtocolUtil.toProtocolHex(packetId) + " (" + packetId + ") Length: " + packetLength + " Bound: " + bound);
 

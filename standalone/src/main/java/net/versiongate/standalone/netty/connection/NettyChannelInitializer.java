@@ -11,6 +11,6 @@ public class NettyChannelInitializer extends ChannelInitializer<Channel> {
 
     @Override
     protected void initChannel(Channel channel) {
-        channel.pipeline().addLast(DECODER_NAME, new MinecraftDecoder());
+        channel.pipeline().addFirst(DECODER_NAME, new MinecraftDecoder());
     }
 }

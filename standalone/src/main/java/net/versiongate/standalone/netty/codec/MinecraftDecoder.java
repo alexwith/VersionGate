@@ -63,9 +63,7 @@ public class MinecraftDecoder extends ChannelInboundHandlerAdapter {
                 final ByteBuf writeBuffer = PooledByteBufAllocator.DEFAULT.buffer();
                 replacer.accept(writeBuffer);
 
-                while (readBuffer.readableBytes() > 0) {
-                    writeBuffer.writeByte(readBuffer.readByte());
-                }
+                writeBuffer.writeBytes(readBuffer);
 
                 future.channel().writeAndFlush(writeBuffer);
                 connectionContext.setTarget(channelFuture.channel());

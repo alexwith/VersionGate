@@ -92,14 +92,20 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
 
         @Override
         protected void decode(ChannelHandlerContext context, ByteBuf message, List<Object> out) {
-            final ByteBuf translationBuffer = context.alloc().buffer().writeBytes(message);
+            final ByteBuf translationBuffer = context.alloc().buffer();
+            translationBuffer.writeBytes(message);
+
             try {
                 this.connection.translate(translationBuffer, PacketBound.IN);
-
                 out.add(translationBuffer.retain());
             } finally {
                 translationBuffer.release();
             }
+        }
+
+        @Override
+        public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
+            cause.printStackTrace();
         }
     }
 }
