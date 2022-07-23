@@ -1,0 +1,22 @@
+plugins {
+    id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+}
+
+group 'net.versiongate'
+version '0.0.1'
+
+repositories {
+    maven { setUrl("https://hub.spigotmc.org/nexus/content/repositories/snapshots/") }
+    maven { setUrl("https://repo.codemc.io/repository/nms/") }
+}
+
+dependencies {
+    implementation(projects.api)
+    implementation(projects.common)
+    implementation(libs.bundles.common)
+
+    compileOnly("org.spigotmc:spigot:1.8.8-R0.1-SNAPSHOT")
+}
+
+// gradle clean shadowJar -Dorg.gradle.java.home=\"/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home\"
