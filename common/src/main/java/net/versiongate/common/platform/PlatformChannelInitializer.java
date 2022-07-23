@@ -62,44 +62,67 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
         this.pipelineDecoder(connection, pipeline);
     }
 
-    public static class DefaultEncoder extends MessageToByteEncoder<ByteBuf> {
+    public static class DefaultEncoder extends MessageToByteEncoder<Object> {
         private final IConnection connection;
+        private final EncoderOutConsumer outConsumer;
 
-        public DefaultEncoder(IConnection connection) {
+        public DefaultEncoder(IConnection connection, EncoderOutConsumer outConsumer) {
             this.connection = connection;
+            this.outConsumer = outConsumer;
         }
 
         @Override
-        protected void encode(ChannelHandlerContext context, ByteBuf message, ByteBuf out) {
-            /*final ByteBuf translationBuffer = context.alloc().buffer().writeBytes(message);
-            try {
-                this.connection.translate(translationBuffer, PacketBound.OUT);
+        protected void encode(ChannelHandlerContext context, Object message, ByteBuf out) {
+            if (message instanceof ByteBuf) {
+                out.writeBytes((ByteBuf) message);
+            } else {
+                try {
+                    this.outConsumer.consume(out, context, message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
-                out.add(translationBuffer.retain());
-            } finally {
-                translationBuffer.release();
-            }*/
-            out.writeBytes(message);
+            this.connection.translate(out, PacketBound.OUT);
+        }
+
+        public interface EncoderOutConsumer {
+
+            void consume(ByteBuf out, ChannelHandlerContext context, Object message) throws Exception;
         }
     }
 
     public static class DefaultDecoder extends ByteToMessageDecoder {
         private final IConnection connection;
+        private final DecoderOutConsumer outConsumer;
 
-        public DefaultDecoder(IConnection connection) {
+        public DefaultDecoder(IConnection connection, DecoderOutConsumer outConsumer) {
             this.connection = connection;
+            this.outConsumer = outConsumer;
         }
 
         @Override
         protected void decode(ChannelHandlerContext context, ByteBuf message, List<Object> out) {
+            if (!message.isReadable()) {
+                return;
+            }
+
+            final boolean shouldTranslate = this.connection.shouldTranslate();
             final ByteBuf translationBuffer = context.alloc().buffer();
-            translationBuffer.writeBytes(message);
+            if (shouldTranslate) {
+                translationBuffer.writeBytes(message);
+
+                this.connection.translate(translationBuffer, PacketBound.IN);
+            }
 
             try {
-                this.connection.translate(translationBuffer, PacketBound.IN);
-                out.add(translationBuffer.retain());
+                this.outConsumer.consume(out, context, translationBuffer);
+            } catch (Exception e) {
+                e.printStackTrace();
             } finally {
-                translationBuffer.release();
+                if (shouldTranslate) {
+                    translationBuffer.release();
+                }
             }
         }
 
@@ -107,5 +130,10 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
         public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
             cause.printStackTrace();
         }
+    }
+
+    public interface DecoderOutConsumer {
+
+        void consume(List<Object> out, ChannelHandlerContext context, ByteBuf message) throws Exception;
     }
 }

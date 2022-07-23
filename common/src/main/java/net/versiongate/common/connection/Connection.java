@@ -26,10 +26,8 @@ public class Connection implements IConnection {
             return;
         }
 
-        final int packetLength = 0;//ProtocolUtil.readVarInt(buffer);
-        final int packetId = 0;//ProtocolUtil.readVarInt(buffer);
-        final IPacket packet = new Packet(packetId, packetLength, buffer);
-        System.out.println(ProtocolUtil.toProtocolHex(packetId) + " (" + packetId + ") Length: " + packetLength + " Bound: " + bound);
+        final int packetId = ProtocolUtil.readVarInt(buffer);
+        final IPacket packet = new Packet(packetId, buffer);
 
         // TODO this is where we translate
 
@@ -40,5 +38,10 @@ public class Connection implements IConnection {
         } finally {
             completeBuffer.release();
         }
+    }
+
+    @Override
+    public boolean shouldTranslate() {
+        return true;
     }
 }
