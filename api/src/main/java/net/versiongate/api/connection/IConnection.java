@@ -2,8 +2,23 @@ package net.versiongate.api.connection;
 
 import io.netty.buffer.ByteBuf;
 import net.versiongate.api.enums.PacketBound;
+import net.versiongate.api.enums.ProtocolState;
 
 public interface IConnection {
+
+    /**
+     * Gets the {@link ProtocolState} the connection is in
+     *
+     * @return the {@link ProtocolState}
+     */
+    ProtocolState getProtocolState();
+
+    /**
+     * Sets the {@link ProtocolState} the connection is in
+     *
+     * @param protocolState the new {@link ProtocolState}
+     */
+    void setProtocolState(ProtocolState protocolState);
 
     /**
      * Disconnects the connection
@@ -14,7 +29,7 @@ public interface IConnection {
      * Starts and ends the translation pipeline
      *
      * @param buffer The buffer allocated by the pipeline codec
-     * @param bound Where the packet is bound.
+     * @param bound  Where the packet is bound.
      */
     void translate(ByteBuf buffer, PacketBound bound);
 
