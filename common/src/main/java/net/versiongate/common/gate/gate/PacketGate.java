@@ -1,4 +1,4 @@
-package net.versiongate.common.packet;
+package net.versiongate.common.gate.gate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

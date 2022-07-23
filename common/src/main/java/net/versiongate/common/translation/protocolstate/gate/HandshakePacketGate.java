@@ -3,7 +3,7 @@ package net.versiongate.common.translation.protocolstate.gate;
 import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.enums.ProtocolState;
-import net.versiongate.common.packet.PacketGate;
+import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.protocolstate.type.handshaking.InboundPacketHandshaking;
 
 public class HandshakePacketGate extends PacketGate {
