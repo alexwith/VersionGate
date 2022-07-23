@@ -1,8 +1,17 @@
 package net.versiongate.api.packet;
 
 import io.netty.buffer.ByteBuf;
+import net.versiongate.api.buffer.BufferType;
+import net.versiongate.api.connection.IConnection;
 
 public interface IPacket {
+
+    /**
+     * Get the {@link IConnection} the packet involves
+     *
+     * @return The {@link IConnection}
+     */
+    IConnection getConnection();
 
     /**
      * This will write the packet contents to a buffer, and should be called once translation is complete
@@ -10,4 +19,32 @@ public interface IPacket {
      * @param buffer The buffer that will be written to
      */
     void writeTo(ByteBuf buffer);
+
+    /**
+     * Reads, then proceeds to replace the {@link BufferType} in the packet contents
+     *
+     * @param type The {@link BufferType}
+     * @param <T>  The generic type of the action
+     * @return What is read from the buffer
+     */
+    <T> T readWrite(BufferType type);
+
+    /**
+     * Reads from the packet contents
+     *
+     * @param type The {@link BufferType}
+     * @param <T>  The generic type of the action
+     * @return What is read from the buffer
+     */
+    <T> T read(BufferType type);
+
+    /**
+     * Writes to the packet contents
+     *
+     * @param type  The {@link BufferType}
+     * @param value The value that is written
+     * @param <T>   The generic type of the action
+     */
+    <T> void write(BufferType type, T value);
+
 }

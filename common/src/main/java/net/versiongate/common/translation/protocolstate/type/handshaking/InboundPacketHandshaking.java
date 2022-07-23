@@ -1,17 +1,16 @@
-package net.versiongate.common.translation.protocolstate.status;
+package net.versiongate.common.translation.protocolstate.type.handshaking;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.translation.IPacketType;
 
-public enum InboundIPacketStatus implements IPacketType {
+public enum InboundPacketHandshaking implements IPacketType {
 
-    STATUS_REQUEST(0x00),
-    PING_REQUEST(0x01);
+    HANDSHAKE(0x00);
 
     private final int id;
 
-    InboundIPacketStatus(int id) {
+    InboundPacketHandshaking(int id) {
         this.id = id;
     }
 
@@ -27,6 +26,6 @@ public enum InboundIPacketStatus implements IPacketType {
 
     @Override
     public ProtocolState getStateApplication() {
-        return ProtocolState.STATUS;
+        return ProtocolState.HANDSHAKING;
     }
 }

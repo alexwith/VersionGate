@@ -2,20 +2,31 @@ package net.versiongate.common.connection;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
+import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.common.packet.Packet;
-import net.versiongate.common.util.ProtocolUtil;
 
 public class Connection implements IConnection {
     private final Channel channel;
 
+    private int protocolVersion;
     private ProtocolState protocolState = ProtocolState.HANDSHAKING;
 
     public Connection(Channel channel) {
         this.channel = channel;
+    }
+
+    @Override
+    public int getProtocolVersion() {
+        return this.protocolVersion;
+    }
+
+    @Override
+    public void setProtocolVersion(int protocolVersion) {
+        this.protocolVersion = protocolVersion;
     }
 
     @Override
@@ -39,8 +50,8 @@ public class Connection implements IConnection {
             return;
         }
 
-        final int packetId = ProtocolUtil.readVarInt(buffer);
-        final IPacket packet = new Packet(packetId, buffer);
+        final int packetId = BufferType.VAR_INT.read(buffer);
+        final IPacket packet = new Packet(this, packetId, buffer);
 
         // TODO this is where we translate
 

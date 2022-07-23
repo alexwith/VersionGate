@@ -7,16 +7,30 @@ import net.versiongate.api.enums.ProtocolState;
 public interface IConnection {
 
     /**
+     * Gets the current protocol version
+     *
+     * @return The protocol version
+     */
+    int getProtocolVersion();
+
+    /**
+     * Gets the protocol server
+     *
+     * @param protocolVersion The new protocol version
+     */
+    void setProtocolVersion(int protocolVersion);
+
+    /**
      * Gets the {@link ProtocolState} the connection is in
      *
-     * @return the {@link ProtocolState}
+     * @return The {@link ProtocolState}
      */
     ProtocolState getProtocolState();
 
     /**
      * Sets the {@link ProtocolState} the connection is in
      *
-     * @param protocolState the new {@link ProtocolState}
+     * @param protocolState The new {@link ProtocolState}
      */
     void setProtocolState(ProtocolState protocolState);
 

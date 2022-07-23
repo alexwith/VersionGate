@@ -1,20 +1,17 @@
-package net.versiongate.common.translation.protocolstate.login;
+package net.versiongate.common.translation.protocolstate.type.status;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.translation.IPacketType;
 
-public enum OutboundIPacketLogin implements IPacketType {
+public enum OutboundPacketStatus implements IPacketType {
 
-    DISCONNECT(0x00),
-    ENCRYPTION_REQUEST(0x01),
-    LOGIN_SUCCESS(0x02),
-    SET_COMPRESSION(0x03),
-    LOGIN_PLUGIN_REQUEST(0x04);
+    STATUS_RESPONSE(0x00),
+    PING_RESPONSE(0x01);
 
     private final int id;
 
-    OutboundIPacketLogin(int id) {
+    OutboundPacketStatus(int id) {
         this.id = id;
     }
 
@@ -30,6 +27,6 @@ public enum OutboundIPacketLogin implements IPacketType {
 
     @Override
     public ProtocolState getStateApplication() {
-        return ProtocolState.LOGIN;
+        return ProtocolState.STATUS;
     }
 }

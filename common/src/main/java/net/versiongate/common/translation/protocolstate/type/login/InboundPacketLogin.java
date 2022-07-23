@@ -1,10 +1,10 @@
-package net.versiongate.common.translation.protocolstate.login;
+package net.versiongate.common.translation.protocolstate.type.login;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.translation.IPacketType;
 
-public enum InboundIPacketLogin implements IPacketType {
+public enum InboundPacketLogin implements IPacketType {
 
     LOGIN_START(0x00),
     ENCRYPTION_RESPONSE(0x01),
@@ -12,7 +12,7 @@ public enum InboundIPacketLogin implements IPacketType {
 
     private final int id;
 
-    InboundIPacketLogin(int id) {
+    InboundPacketLogin(int id) {
         this.id = id;
     }
 

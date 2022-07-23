@@ -1,9 +1,9 @@
-package net.versiongate.common.translation.version1_8;
+package net.versiongate.common.translation.version1_8.type;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.translation.IPacketType;
 
-public enum OutboundIPacket1_8 implements IPacketType {
+public enum OutboundPacket1_8 implements IPacketType {
 
     KEEP_ALIVE(0x00),
     JOIN_GAME(0x01),
@@ -82,7 +82,7 @@ public enum OutboundIPacket1_8 implements IPacketType {
 
     private final int id;
 
-    OutboundIPacket1_8(int id) {
+    OutboundPacket1_8(int id) {
         this.id = id;
     }
 

@@ -1,9 +1,9 @@
-package net.versiongate.common.translation.version1_9;
+package net.versiongate.common.translation.version1_9.type;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.translation.IPacketType;
 
-public enum InboundIPacket1_9 implements IPacketType {
+public enum InboundPacket1_9 implements IPacketType {
 
     TELEPORT_CONFIRM(0x00),
     TAB_COMPLETE(0x01),
@@ -38,7 +38,7 @@ public enum InboundIPacket1_9 implements IPacketType {
 
     private final int id;
 
-    InboundIPacket1_9(int id) {
+    InboundPacket1_9(int id) {
         this.id = id;
     }
 

@@ -1,17 +1,17 @@
-package net.versiongate.common.translation.protocolstate.status;
+package net.versiongate.common.translation.protocolstate.type.status;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.translation.IPacketType;
 
-public enum OutboundIPacketStatus implements IPacketType {
+public enum InboundPacketStatus implements IPacketType {
 
-    STATUS_RESPONSE(0x00),
-    PING_RESPONSE(0x01);
+    STATUS_REQUEST(0x00),
+    PING_REQUEST(0x01);
 
     private final int id;
 
-    OutboundIPacketStatus(int id) {
+    InboundPacketStatus(int id) {
         this.id = id;
     }
 
@@ -22,7 +22,7 @@ public enum OutboundIPacketStatus implements IPacketType {
 
     @Override
     public PacketBound getPacketBound() {
-        return PacketBound.OUT;
+        return PacketBound.IN;
     }
 
     @Override

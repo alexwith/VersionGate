@@ -1,9 +1,9 @@
-package net.versiongate.common.translation.version1_8;
+package net.versiongate.common.translation.version1_8.type;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.translation.IPacketType;
 
-public enum InboundIPacket1_8 implements IPacketType {
+public enum InboundPacket1_8 implements IPacketType {
 
     KEEP_ALIVE(0x00),
     CHAT_MESSAGE(0x01),
@@ -34,7 +34,7 @@ public enum InboundIPacket1_8 implements IPacketType {
 
     private final int id;
 
-    InboundIPacket1_8(int id) {
+    InboundPacket1_8(int id) {
         this.id = id;
     }
 

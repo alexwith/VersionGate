@@ -1,16 +1,20 @@
-package net.versiongate.common.translation.protocolstate.handshaking;
+package net.versiongate.common.translation.protocolstate.type.login;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.translation.IPacketType;
 
-public enum InboundIPacketHandshaking implements IPacketType {
+public enum OutboundPacketLogin implements IPacketType {
 
-    HANDSHAKE(0x00);
+    DISCONNECT(0x00),
+    ENCRYPTION_REQUEST(0x01),
+    LOGIN_SUCCESS(0x02),
+    SET_COMPRESSION(0x03),
+    LOGIN_PLUGIN_REQUEST(0x04);
 
     private final int id;
 
-    InboundIPacketHandshaking(int id) {
+    OutboundPacketLogin(int id) {
         this.id = id;
     }
 
@@ -21,11 +25,11 @@ public enum InboundIPacketHandshaking implements IPacketType {
 
     @Override
     public PacketBound getPacketBound() {
-        return PacketBound.IN;
+        return PacketBound.OUT;
     }
 
     @Override
     public ProtocolState getStateApplication() {
-        return ProtocolState.HANDSHAKING;
+        return ProtocolState.LOGIN;
     }
 }

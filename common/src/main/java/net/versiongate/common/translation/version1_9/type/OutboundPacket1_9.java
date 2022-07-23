@@ -1,9 +1,9 @@
-package net.versiongate.common.translation.version1_9;
+package net.versiongate.common.translation.version1_9.type;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.translation.IPacketType;
 
-public enum OutboundIPacket1_9 implements IPacketType {
+public enum OutboundPacket1_9 implements IPacketType {
 
     SPAWN_ENTITY(0x00),
     SPAWN_EXPERIENCE_ORB(0x01),
@@ -85,7 +85,7 @@ public enum OutboundIPacket1_9 implements IPacketType {
 
     private final int id;
 
-    OutboundIPacket1_9(int id) {
+    OutboundPacket1_9(int id) {
         this.id = id;
     }
 
