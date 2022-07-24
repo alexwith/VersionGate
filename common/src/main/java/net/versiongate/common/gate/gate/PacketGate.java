@@ -3,7 +3,7 @@ package net.versiongate.common.gate.gate;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import net.versiongate.api.gate.gate.IPacketGate;
-import net.versiongate.api.gate.translation.IPacketConsumer;
+import net.versiongate.api.gate.application.IPacketConsumer;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
 
@@ -22,7 +22,7 @@ public abstract class PacketGate implements IPacketGate {
         }
 
         try {
-            translator.translate(packet);
+            translator.consume(packet);
         } catch (Exception e) {
             e.printStackTrace();
         }

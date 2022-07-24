@@ -1,7 +1,7 @@
 package net.versiongate.api.gate.gate;
 
 import net.versiongate.api.gate.IGate;
-import net.versiongate.api.gate.translation.IPacketConsumer;
+import net.versiongate.api.gate.application.IPacketConsumer;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
 
