@@ -16,13 +16,13 @@ public abstract class PacketGate implements IPacketGate {
 
     @Override
     public void translate(IPacket packet) {
-        final IPacketConsumer translator = this.packetConsumers.get(packet.getType());
-        if (translator == null) {
+        final IPacketConsumer consumer = this.packetConsumers.get(packet.getType());
+        if (consumer == null) {
             return;
         }
 
         try {
-            translator.consume(packet);
+            consumer.consume(packet);
         } catch (Exception e) {
             e.printStackTrace();
         }
