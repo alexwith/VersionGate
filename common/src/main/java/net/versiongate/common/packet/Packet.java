@@ -4,15 +4,18 @@ import io.netty.buffer.ByteBuf;
 import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.packet.IPacket;
+import net.versiongate.api.packet.IPacketType;
 
 public class Packet implements IPacket {
     private final IConnection connection;
-    private final int id;
+    private final IPacketType type;
     private final ByteBuf contentBuffer;
 
-    public Packet(IConnection connection, int id, ByteBuf contents) {
+    private boolean isCancelled;
+
+    public Packet(IConnection connection, IPacketType type, ByteBuf contents) {
         this.connection = connection;
-        this.id = id;
+        this.type = type;
         this.contentBuffer = contents;
     }
 
@@ -22,9 +25,27 @@ public class Packet implements IPacket {
     }
 
     @Override
-    public void writeTo(ByteBuf buffer) {
-        BufferType.VAR_INT.write(buffer, this.id);
+    public IPacketType getType() {
+        return this.type;
+    }
 
+    @Override
+    public void cancel() {
+        this.isCancelled = true;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.isCancelled;
+    }
+
+    @Override
+    public void writeTo(ByteBuf buffer) {
+        if (this.contentBuffer == null) {
+            return;
+        }
+
+        BufferType.VAR_INT.write(buffer, this.type.getId());
         buffer.writeBytes(this.contentBuffer);
     }
 

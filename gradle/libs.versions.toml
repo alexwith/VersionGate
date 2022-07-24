@@ -1,13 +1,11 @@
 [versions]
 ec-ver = "11.1.0"
-vavr-ver = "0.10.4"
 netty-ver = "4.1.77.Final"
 
 [libraries]
 ec = { module="org.eclipse.collections:eclipse-collections", version.ref="ec-ver" }
 ec-api = { module="org.eclipse.collections:eclipse-collections-api", version.ref="ec-ver" }
-vavr = { module="io.vavr:vavr", version.ref="vavr-ver" }
 netty = { module="io.netty:netty-all", version.ref="netty-ver" }
 
 [bundles]
-common = ["ec-api", "ec", "vavr", "netty"]
+common = ["ec-api", "ec", "netty"]

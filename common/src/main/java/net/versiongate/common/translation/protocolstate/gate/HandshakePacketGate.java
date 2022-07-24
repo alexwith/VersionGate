@@ -15,14 +15,14 @@ public class HandshakePacketGate extends PacketGate {
 
     @Override
     public void load() {
-        this.packetTranslation(InboundPacketHandshaking.HANDSHAKE, (packet) -> {
+        this.packetConsumer(InboundPacketHandshaking.HANDSHAKE, (packet) -> {
             final int protocolVersion = packet.readWrite(BufferType.VAR_INT);
             packet.readWrite(BufferType.STRING);
             packet.readWrite(BufferType.UNSIGNED_SHORT);
             final int state = packet.readWrite(BufferType.VAR_INT);
 
             final IConnection connection = packet.getConnection();
-            connection.setProtocolVersion(protocolVersion); // TODO we need to get the closest protocol version for the PacketGate
+            connection.setProtocolVersion(protocolVersion);
             connection.setProtocolState(ProtocolState.values()[state]);
         });
     }

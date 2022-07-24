@@ -2,24 +2,29 @@ package net.versiongate.common.gate.gate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import net.versiongate.api.gate.gate.IPacketGate;
+import net.versiongate.api.gate.translation.IPacketConsumer;
 import net.versiongate.api.packet.IPacket;
-import net.versiongate.api.packet.IPacketGate;
-import net.versiongate.api.translation.IPacketType;
+import net.versiongate.api.packet.IPacketType;
 
 public abstract class PacketGate implements IPacketGate {
-    private final Map<IPacketType, Consumer<IPacket>> packetTranslators = new ConcurrentHashMap<>();
+    private final Map<IPacketType, IPacketConsumer> packetConsumers = new ConcurrentHashMap<>();
 
-    public void packetTranslation(IPacketType packetType, Consumer<IPacket> consumer) {
-        this.packetTranslators.put(packetType, consumer);
+    public void packetConsumer(IPacketType packetType, IPacketConsumer consumer) {
+        this.packetConsumers.put(packetType, consumer);
     }
 
-    public void translate(IPacketType packetType, IPacket packet) {
-        final Consumer<IPacket> translator = this.packetTranslators.get(packetType);
+    @Override
+    public void translate(IPacket packet) {
+        final IPacketConsumer translator = this.packetConsumers.get(packet.getType());
         if (translator == null) {
             return;
         }
 
-        translator.accept(packet);
+        try {
+            translator.translate(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

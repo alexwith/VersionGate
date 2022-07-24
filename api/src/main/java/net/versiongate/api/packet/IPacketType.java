@@ -1,4 +1,4 @@
-package net.versiongate.api.translation;
+package net.versiongate.api.packet;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;

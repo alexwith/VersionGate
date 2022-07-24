@@ -14,6 +14,25 @@ public interface IPacket {
     IConnection getConnection();
 
     /**
+     * Gets the {@link IPacketType} of this packet
+     *
+     * @return The {@link IPacketType}
+     */
+    IPacketType getType();
+
+    /**
+     * Cancels the packet
+     */
+    void cancel();
+
+    /**
+     * Returns if the packet is cancelled or not
+     *
+     * @return Is the packet cancelled
+     */
+    boolean isCancelled();
+
+    /**
      * This will write the packet contents to a buffer, and should be called once translation is complete
      *
      * @param buffer The buffer that will be written to

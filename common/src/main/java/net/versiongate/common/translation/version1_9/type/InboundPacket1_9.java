@@ -1,7 +1,7 @@
 package net.versiongate.common.translation.version1_9.type;
 
 import net.versiongate.api.enums.PacketBound;
-import net.versiongate.api.translation.IPacketType;
+import net.versiongate.api.packet.IPacketType;
 
 public enum InboundPacket1_9 implements IPacketType {
 

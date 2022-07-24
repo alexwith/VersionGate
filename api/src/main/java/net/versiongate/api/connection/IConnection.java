@@ -3,15 +3,16 @@ package net.versiongate.api.connection;
 import io.netty.buffer.ByteBuf;
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
+import net.versiongate.api.gate.version.ProtocolVersion;
 
 public interface IConnection {
 
     /**
-     * Gets the current protocol version
+     * Gets the current {@link ProtocolVersion}
      *
-     * @return The protocol version
+     * @return The {@link ProtocolVersion}
      */
-    int getProtocolVersion();
+    ProtocolVersion getProtocolVersion();
 
     /**
      * Gets the protocol server

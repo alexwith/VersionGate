@@ -2,7 +2,7 @@ package net.versiongate.common.translation.protocolstate.type.login;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
-import net.versiongate.api.translation.IPacketType;
+import net.versiongate.api.packet.IPacketType;
 
 public enum OutboundPacketLogin implements IPacketType {
 
