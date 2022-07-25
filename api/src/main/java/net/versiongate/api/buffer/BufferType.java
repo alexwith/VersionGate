@@ -67,6 +67,12 @@ public enum BufferType {
     UNSIGNED_SHORT(
         ByteBuf::readUnsignedShort,
         ByteBuf::writeShort
+    ),
+    BYTE(
+        ByteBuf::readByte,
+        (buffer, value) -> {
+            buffer.writeByte(value);
+        }
     );
 
     private final Function<ByteBuf, Object> reader;

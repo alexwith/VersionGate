@@ -7,7 +7,7 @@ import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.protocolstate.type.handshaking.InboundPacketHandshaking;
 
 public class HandshakePacketGate extends PacketGate {
-    
+
     @Override
     public void load() {
         this.packetConsumer(InboundPacketHandshaking.HANDSHAKE, (packet) -> {
@@ -18,12 +18,15 @@ public class HandshakePacketGate extends PacketGate {
                 BufferType.VAR_INT
             );
 
-            final int protocolVersion = packet.getField(0);
+            final int connectionProtocol = packet.getField(0);
             final int state = packet.getField(3);
 
             final IConnection connection = packet.getConnection();
-            connection.setProtocolVersion(protocolVersion);
+            connection.setProtocolVersion(connectionProtocol);
             connection.setProtocolState(ProtocolState.values()[state]);
+
+            final int serverProtocol = this.gateManager.getProtocolVersion().getId();
+            packet.setField(0, serverProtocol);
         });
     }
 }

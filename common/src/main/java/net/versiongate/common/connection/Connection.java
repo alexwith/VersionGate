@@ -59,7 +59,6 @@ public class Connection implements IConnection {
 
         final int packetId = BufferType.VAR_INT.read(buffer);
         final IPacketType packetType = PacketTypes.getPacketType(this.protocolState, bound, packetId);
-        System.out.println("packet sent: " + packetType);
         if (packetType == null) {
             this.completeBuffer(buffer, (completedBuffer) -> {
                 BufferType.VAR_INT.write(completedBuffer, packetId);
@@ -67,6 +66,7 @@ public class Connection implements IConnection {
             });
             return;
         }
+        System.out.println("packet: " + packetType);
 
         final IPacket packet = new Packet(this, packetType, buffer);
         this.connectionGate.translatePacket(packet);
