@@ -52,7 +52,7 @@ public class Packet implements IPacket {
         }
 
         BufferType.VAR_INT.write(buffer, this.type.getId());
-
+        
         for (int i = 0; i < this.content.size(); i++) {
             final BufferType type = this.contentTypes.get(i);
             final Object value = this.content.get(i);
