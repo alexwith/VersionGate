@@ -5,7 +5,8 @@ import java.util.TreeMap;
 public enum ProtocolVersion {
 
     VERSION1_8(47, "1.8"),
-    VERSION1_9(107, "1.9");
+    VERSION1_9(107, "1.9"),
+    UNKNOWN(-1, "Unknown");
 
     private final int id;
     private final String name;

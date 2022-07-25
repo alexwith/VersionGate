@@ -1,5 +1,7 @@
 package net.versiongate.api.buffer;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
 import java.util.function.BiConsumer;
@@ -51,6 +53,15 @@ public enum BufferType {
             final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
             BufferType.VAR_INT.write(buffer, bytes.length);
             buffer.writeBytes(bytes);
+        }
+    ),
+    JSON(
+        (buffer) -> {
+            final String jsonString = BufferType.STRING.read(buffer);
+            return new Gson().fromJson(jsonString, JsonElement.class).getAsJsonObject();
+        },
+        (buffer, value) -> {
+            BufferType.STRING.write(buffer, value.toString());
         }
     ),
     UNSIGNED_SHORT(

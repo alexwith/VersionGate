@@ -40,30 +40,27 @@ public interface IPacket {
     void writeTo(ByteBuf buffer);
 
     /**
-     * Reads, then proceeds to replace the {@link BufferType} in the packet contents
+     * Creates the schema for the packet, so it can cache its fields
      *
-     * @param type The {@link BufferType}
-     * @param <T>  The generic type of the action
-     * @return What is read from the buffer
+     * @param types The packet schema
      */
-    <T> T readWrite(BufferType type);
+    void schema(BufferType... types);
 
     /**
-     * Reads from the packet contents
+     * Gets a field from the content cache
      *
-     * @param type The {@link BufferType}
-     * @param <T>  The generic type of the action
-     * @return What is read from the buffer
+     * @param index The index of the field
+     * @param <T>   The type of the field
+     * @return The actual field value
      */
-    <T> T read(BufferType type);
+    <T> T getField(int index);
 
     /**
-     * Writes to the packet contents
+     * Sets a field in the content cache
      *
-     * @param type  The {@link BufferType}
-     * @param value The value that is written
-     * @param <T>   The generic type of the action
+     * @param index The index of the field
+     * @param value The value of the field
+     * @param <T>   The type of the value
      */
-    <T> void write(BufferType type, T value);
-
+    <T> void setField(int index, T value);
 }

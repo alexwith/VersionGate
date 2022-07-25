@@ -1,11 +1,13 @@
 [versions]
-ec-ver = "11.1.0"
-netty-ver = "4.1.77.Final"
+ec-ver="11.1.0"
+netty-ver="4.1.77.Final"
+gson-ver="2.9.0"
 
 [libraries]
 ec = { module="org.eclipse.collections:eclipse-collections", version.ref="ec-ver" }
 ec-api = { module="org.eclipse.collections:eclipse-collections-api", version.ref="ec-ver" }
 netty = { module="io.netty:netty-all", version.ref="netty-ver" }
+gson = { module="com.google.code.gson:gson", version.ref="gson-ver" }
 
 [bundles]
-common = ["ec-api", "ec", "netty"]
+common = ["ec-api", "ec", "netty", "gson"]

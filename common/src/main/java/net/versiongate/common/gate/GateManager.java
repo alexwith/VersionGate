@@ -1,34 +1,60 @@
 package net.versiongate.common.gate;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import net.versiongate.api.gate.IGate;
 import net.versiongate.api.gate.IGateManager;
-import net.versiongate.common.gate.gate.PacketGate;
+import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.common.translation.protocolstate.gate.HandshakePacketGate;
 import net.versiongate.common.translation.protocolstate.gate.LoginPacketGate;
 import net.versiongate.common.translation.protocolstate.gate.StatusPacketGate;
-import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 
 public class GateManager implements IGateManager {
+    private final Set<IGate> handshakingGates = new HashSet<>();
 
-    public static final Set<PacketGate> HANDSHAKING_GATES = UnifiedSet.newSetWith(
-        new HandshakePacketGate(),
-        new LoginPacketGate(),
-        new StatusPacketGate()
-    );
+    private ProtocolVersion protocolVersion = ProtocolVersion.UNKNOWN;
 
-    public GateManager() {
-        this.loadGates(HANDSHAKING_GATES);
+    @Override
+    public ProtocolVersion getProtocolVersion() {
+        return this.protocolVersion;
     }
 
-    private <T extends IGate> void loadGate(T gate) {
-        gate.load();
+    @Override
+    public Set<IGate> getHandshakingGates() {
+        return this.handshakingGates;
     }
 
-    private void loadGates(Collection<? extends IGate> gates) {
+    @Override
+    public void setProtocolVersion(ProtocolVersion protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    @Override
+    public boolean hasProtocolVersion() {
+        return this.protocolVersion != ProtocolVersion.UNKNOWN;
+    }
+
+    @Override
+    public void initialLoad() {
+        this.handshakingGates.addAll(this.loadGates(
+            new HandshakePacketGate(),
+            new LoginPacketGate(),
+            new StatusPacketGate()
+        ));
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends IGate> Collection<T> loadGates(T... gates) {
+        return (Collection<T>) this.loadGates(Arrays.asList(gates));
+    }
+
+    private Collection<? extends IGate> loadGates(Collection<? extends IGate> gates) {
         for (final IGate gate : gates) {
-            this.loadGate(gate);
+            gate.load();
         }
+
+        return gates;
     }
 }

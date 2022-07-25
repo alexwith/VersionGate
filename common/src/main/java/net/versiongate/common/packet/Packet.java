@@ -1,6 +1,10 @@
 package net.versiongate.common.packet;
 
 import io.netty.buffer.ByteBuf;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.packet.IPacket;
@@ -10,6 +14,8 @@ public class Packet implements IPacket {
     private final IConnection connection;
     private final IPacketType type;
     private final ByteBuf contentBuffer;
+    private final List<Object> content = new ArrayList<>();
+    private final Map<Integer, BufferType> contentTypes = new HashMap<>();
 
     private boolean isCancelled;
 
@@ -46,24 +52,34 @@ public class Packet implements IPacket {
         }
 
         BufferType.VAR_INT.write(buffer, this.type.getId());
+
+        for (int i = 0; i < this.content.size(); i++) {
+            final BufferType type = this.contentTypes.get(i);
+            final Object value = this.content.get(i);
+            type.write(buffer, value);
+        }
+
         buffer.writeBytes(this.contentBuffer);
     }
 
     @Override
-    public <T> T readWrite(BufferType type) {
-        final T value = this.read(type);
-        this.write(type, value);
-
-        return value;
+    public void schema(BufferType... types) {
+        for (int i = 0; i < types.length; i++) {
+            final BufferType type = types[i];
+            final Object value = type.read(this.contentBuffer);
+            this.content.add(i, value);
+            this.contentTypes.put(i, type);
+        }
     }
 
     @Override
-    public <T> T read(BufferType type) {
-        return type.read(this.contentBuffer);
+    @SuppressWarnings("unchecked")
+    public <T> T getField(int index) {
+        return (T) this.content.get(index);
     }
 
     @Override
-    public <T> void write(BufferType type, T value) {
-        type.write(this.contentBuffer, value);
+    public <T> void setField(int index, T value) {
+        this.content.set(index, value);
     }
 }
