@@ -66,7 +66,6 @@ public class Connection implements IConnection {
             });
             return;
         }
-        System.out.println("packet: " + packetType);
 
         final IPacket packet = new Packet(this, packetType, buffer);
         this.connectionGate.translatePacket(packet);
@@ -75,6 +74,7 @@ public class Connection implements IConnection {
         }
 
         this.completeBuffer(buffer, packet::writeTo);
+        System.out.println("translation completed packet: " + packetType + " -> " + bound);
     }
 
     @Override

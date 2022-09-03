@@ -39,6 +39,7 @@ public class PacketTypes {
             for (final IPacketType type : gateType.getInbound()) {
                 populator.accept(INBOUND, type);
             }
+
             for (final IPacketType type : gateType.getOutbound()) {
                 populator.accept(OUTBOUND, type);
             }
