@@ -23,7 +23,7 @@ public class Connection implements IConnection {
 
     public Connection(Channel channel) {
         this.channel = channel;
-        this.connectionGate = new ConnectionGate(this);
+        this.connectionGate = new ConnectionGate();
     }
 
     @Override
@@ -34,6 +34,7 @@ public class Connection implements IConnection {
     @Override
     public void setProtocolVersion(int protocolVersion) {
         this.protocolVersion = ProtocolVersion.getClosest(protocolVersion);
+        this.connectionGate.onSetProtocolVersion(this.protocolVersion);
     }
 
     @Override
@@ -80,7 +81,7 @@ public class Connection implements IConnection {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Translated: " + packetType + " -> " + bound);
+        System.out.println("Processed: " + packetType + " -> " + bound);
     }
 
     @Override

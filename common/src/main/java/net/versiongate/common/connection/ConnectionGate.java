@@ -1,7 +1,7 @@
 package net.versiongate.common.connection;
 
 import java.util.List;
-import net.versiongate.api.connection.IConnection;
+import java.util.Set;
 import net.versiongate.api.connection.IConnectionGate;
 import net.versiongate.api.gate.IGate;
 import net.versiongate.api.gate.IGateManager;
@@ -12,18 +12,10 @@ import net.versiongate.common.platform.Platform;
 import org.eclipse.collections.impl.list.mutable.FastList;
 
 public class ConnectionGate implements IConnectionGate {
-    private final IConnection connection;
     private final List<IGate> gates = FastList.newList();
 
-    public ConnectionGate(IConnection connection) {
-        this.connection = connection;
-
-        this.loadRelevantGates();
-    }
-
-    @Override
-    public void addGate(IGate gate) {
-        this.gates.add(gate);
+    public ConnectionGate() {
+        this.loadRelevantGates(null);
     }
 
     @Override
@@ -38,11 +30,26 @@ public class ConnectionGate implements IConnectionGate {
         }
     }
 
-    private void loadRelevantGates() {
+    @Override
+    public void onSetProtocolVersion(ProtocolVersion protocolVersion) {
+        this.gates.clear();
+
+        this.loadRelevantGates(ProtocolVersion.VERSION1_8); // TODO figure out how we're gonna do this properly
+    }
+
+    private void loadRelevantGates(ProtocolVersion protocolVersion) {
         final IGateManager gateManager = Platform.get().getGateManager();
         this.gates.addAll(gateManager.getHandshakingGates());
 
-        final ProtocolVersion protocolVersion = this.connection.getProtocolVersion();
-        System.out.println("bob: " + protocolVersion);
+        if (protocolVersion == null) {
+            return;
+        }
+
+        final Set<IGate> versionGates = gateManager.getVersionGates(protocolVersion);
+        if (versionGates == null) {
+            throw new IllegalStateException("Something has gone very wrong, as the version gates are null");
+        }
+
+        this.gates.addAll(versionGates);
     }
 }

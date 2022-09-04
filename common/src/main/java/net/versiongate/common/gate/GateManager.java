@@ -24,11 +24,6 @@ public class GateManager implements IGateManager {
     }
 
     @Override
-    public Set<IGate> getHandshakingGates() {
-        return this.handshakingGates;
-    }
-
-    @Override
     public void setProtocolVersion(ProtocolVersion protocolVersion) {
         this.protocolVersion = protocolVersion;
     }
@@ -36,6 +31,16 @@ public class GateManager implements IGateManager {
     @Override
     public boolean hasProtocolVersion() {
         return this.protocolVersion != ProtocolVersion.UNKNOWN;
+    }
+
+    @Override
+    public Set<IGate> getHandshakingGates() {
+        return this.handshakingGates;
+    }
+
+    @Override
+    public Set<IGate> getVersionGates(ProtocolVersion protocolVersion) {
+        return this.versionGates.get(protocolVersion);
     }
 
     @Override

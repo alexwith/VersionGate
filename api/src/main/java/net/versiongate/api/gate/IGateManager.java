@@ -1,29 +1,13 @@
 package net.versiongate.api.gate;
 
 import java.util.Set;
+import net.versiongate.api.gate.gate.IPacketGate;
 import net.versiongate.api.gate.version.ProtocolVersion;
 
 public interface IGateManager {
 
-    /**
-     * Gets handshaking gates loaded on {@link #initialLoad()}
-     *
-     * @return The handshaking gates
-     */
-    Set<IGate> getHandshakingGates();
-
-    /**
-     * Gets the {@link ProtocolVersion} of the server
-     *
-     * @return The {@link ProtocolVersion}
-     */
     ProtocolVersion getProtocolVersion();
 
-    /**
-     * Sets the {@link ProtocolVersion} of the server
-     *
-     * @param protocolVersion The {@link ProtocolVersion}
-     */
     void setProtocolVersion(ProtocolVersion protocolVersion);
 
     /**
@@ -34,7 +18,22 @@ public interface IGateManager {
     boolean hasProtocolVersion();
 
     /**
-     * The initial loading of for instance handshaking packets
+     * Gets handshaking gates loaded on {@link #initialLoad()}
+     *
+     * @return The handshaking gates
+     */
+    Set<IGate> getHandshakingGates();
+
+    /**
+     * Gets the relevant gates for the specified {@link ProtocolVersion}
+     *
+     * @param protocolVersion The {@link ProtocolVersion} we are querying
+     * @return This can be null, but should always be returning gates
+     */
+    Set<IGate> getVersionGates(ProtocolVersion protocolVersion);
+
+    /**
+     * The initial loading of all {@link IPacketGate}'s
      */
     void initialLoad();
 }

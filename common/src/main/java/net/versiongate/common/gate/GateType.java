@@ -99,7 +99,7 @@ public enum GateType implements IGateType {
 
         for (final IPacketType type : this.inbound) {
             for (final IPacketType previousType : previous.getInbound()) {
-                if (!previousType.getName().equals(previousType.getName())) {
+                if (!type.getName().equals(previousType.getName())) {
                     continue;
                 }
 
@@ -109,7 +109,7 @@ public enum GateType implements IGateType {
 
         for (final IPacketType type : this.outbound) {
             for (final IPacketType previousType : previous.getOutbound()) {
-                if (!previousType.getName().equals(previousType.getName())) {
+                if (!type.getName().equals(previousType.getName())) {
                     continue;
                 }
 

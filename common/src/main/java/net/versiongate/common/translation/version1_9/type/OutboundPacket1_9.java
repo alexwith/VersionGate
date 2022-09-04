@@ -101,6 +101,6 @@ public enum OutboundPacket1_9 implements IPacketType {
 
     @Override
     public PacketBound getPacketBound() {
-        return PacketBound.IN;
+        return PacketBound.OUT;
     }
 }
