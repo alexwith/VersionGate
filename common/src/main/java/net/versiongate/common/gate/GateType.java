@@ -1,24 +1,32 @@
 package net.versiongate.common.gate;
 
+import java.util.Map;
 import java.util.Set;
 import net.versiongate.api.enums.PacketBound;
+import net.versiongate.api.gate.IGateType;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.api.packet.IPacketType;
+import net.versiongate.common.gate.gate.ProtocolGate;
+import net.versiongate.common.translation.protocolstate.ProtocolState;
 import net.versiongate.common.translation.protocolstate.type.handshaking.InboundPacketHandshaking;
 import net.versiongate.common.translation.protocolstate.type.login.InboundPacketLogin;
 import net.versiongate.common.translation.protocolstate.type.login.OutboundPacketLogin;
 import net.versiongate.common.translation.protocolstate.type.status.InboundPacketStatus;
 import net.versiongate.common.translation.protocolstate.type.status.OutboundPacketStatus;
+import net.versiongate.common.translation.version1_8.Version1_8;
 import net.versiongate.common.translation.version1_8.type.InboundPacket1_8;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
+import net.versiongate.common.translation.version1_9.Version1_9;
 import net.versiongate.common.translation.version1_9.type.InboundPacket1_9;
 import net.versiongate.common.translation.version1_9.type.OutboundPacket1_9;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 
-public enum GateType {
+public enum GateType implements IGateType {
 
-    COMMON(
+    PROTOCOL_STATE(
         null,
+        new ProtocolState(),
         InboundPacketHandshaking.class,
         InboundPacketLogin.class,
         OutboundPacketLogin.class,
@@ -27,43 +35,94 @@ public enum GateType {
     ),
     VERSION1_8(
         ProtocolVersion.VERSION1_8,
+        new Version1_8(),
         InboundPacket1_8.class,
         OutboundPacket1_8.class
     ),
     VERSION1_9(
         ProtocolVersion.VERSION1_9,
+        new Version1_9(),
         InboundPacket1_9.class,
         OutboundPacket1_9.class
     );
 
     private final ProtocolVersion protocolVersion;
+    private final ProtocolGate protocolGate;
     private final Set<IPacketType> inbound = UnifiedSet.newSet();
     private final Set<IPacketType> outbound = UnifiedSet.newSet();
+    private final Map<IPacketType, IPacketType> mapped = UnifiedMap.newMap();
 
     @SafeVarargs
-    GateType(ProtocolVersion protocolVersion, Class<? extends IPacketType>... types) {
+    GateType(ProtocolVersion protocolVersion, ProtocolGate protocolGate, Class<? extends IPacketType>... types) {
         this.protocolVersion = protocolVersion;
+        this.protocolGate = protocolGate;
 
-        this.computeTypes(types);
+        this.computePacketTypes(types);
+        this.mapPacketTypes();
     }
 
+    @Override
     public ProtocolVersion getProtocolVersion() {
         return this.protocolVersion;
     }
 
+    @Override
+    public ProtocolGate getProtocolGate() {
+        return this.protocolGate;
+    }
+
+    @Override
     public Set<IPacketType> getInbound() {
         return this.inbound;
     }
 
+    @Override
     public Set<IPacketType> getOutbound() {
         return this.outbound;
     }
 
+    @Override
+    public IPacketType getMappedPacketType(IPacketType packetType) {
+        return this.mapped.get(packetType);
+    }
+
     @SafeVarargs
-    private final void computeTypes(Class<? extends IPacketType>... types) {
+    private final void computePacketTypes(Class<? extends IPacketType>... types) {
         for (final Class<? extends IPacketType> typeClass : types) {
             for (final IPacketType type : typeClass.getEnumConstants()) {
                 (type.getPacketBound() == PacketBound.IN ? this.inbound : this.outbound).add(type);
+            }
+        }
+    }
+
+    private void mapPacketTypes() {
+        final int index = this.ordinal() - 1;
+        if (index < 0) {
+            return;
+        }
+
+        final GateType previous = GateType.values()[index];
+        if (previous.getProtocolVersion() == null) {
+            return;
+        }
+
+        for (final IPacketType type : this.inbound) {
+            for (final IPacketType previousType : previous.getInbound()) {
+                if (!previousType.getName().equals(previousType.getName())) {
+                    continue;
+                }
+
+                previous.mapped.put(previousType, type);
+            }
+        }
+
+        for (final IPacketType type : this.outbound) {
+            for (final IPacketType previousType : previous.getOutbound()) {
+                if (!previousType.getName().equals(previousType.getName())) {
+                    continue;
+                }
+
+                previous.mapped.put(previousType, type);
             }
         }
     }

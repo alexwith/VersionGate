@@ -2,19 +2,19 @@ package net.versiongate.common.gate;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import net.versiongate.api.gate.IGate;
 import net.versiongate.api.gate.IGateManager;
+import net.versiongate.api.gate.IGateType;
 import net.versiongate.api.gate.gate.IProtocolGate;
 import net.versiongate.api.gate.version.ProtocolVersion;
-import net.versiongate.common.translation.protocolstate.gate.HandshakePacketGate;
-import net.versiongate.common.translation.protocolstate.gate.LoginPacketGate;
-import net.versiongate.common.translation.protocolstate.gate.StatusPacketGate;
-import net.versiongate.common.translation.version1_8.Version1_8;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 
 public class GateManager implements IGateManager {
     private final Set<IGate> handshakingGates = UnifiedSet.newSet();
+    private final Map<ProtocolVersion, Set<IGate>> versionGates = UnifiedMap.newMap();
 
     private ProtocolVersion protocolVersion = ProtocolVersion.UNKNOWN;
 
@@ -40,17 +40,25 @@ public class GateManager implements IGateManager {
 
     @Override
     public void initialLoad() {
-        this.handshakingGates.addAll(this.loadGates(
-            new HandshakePacketGate(),
-            new LoginPacketGate(),
-            new StatusPacketGate()
-        ));
+        for (final IGateType type : GateType.values()) {
+            final IProtocolGate protocolGate = type.getProtocolGate();
+            final Collection<? extends IGate> gates = this.loadGates(protocolGate.packetGates());
 
-        // This is temporary until we introduce more versions, this is just to get 1.8 -> 1.9 working
-        final IProtocolGate protocolGate = new Version1_8();
-        protocolGate.load();
+            protocolGate.load();
 
-        this.handshakingGates.addAll(this.loadGates(protocolGate.packetGates()));
+            if (type == GateType.PROTOCOL_STATE) {
+                this.handshakingGates.addAll(gates);
+            } else {
+                this.versionGates.compute(type.getProtocolVersion(), ($, mapGates) -> {
+                    if (mapGates == null) {
+                        return UnifiedSet.newSet(gates);
+                    }
+
+                    mapGates.addAll(gates);
+                    return mapGates;
+                });
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")

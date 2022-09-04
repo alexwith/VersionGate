@@ -7,32 +7,12 @@ import net.versiongate.api.gate.version.ProtocolVersion;
 
 public interface IConnection {
 
-    /**
-     * Gets the current {@link ProtocolVersion}
-     *
-     * @return The {@link ProtocolVersion}
-     */
     ProtocolVersion getProtocolVersion();
 
-    /**
-     * Gets the protocol server
-     *
-     * @param protocolVersion The new protocol version
-     */
     void setProtocolVersion(int protocolVersion);
 
-    /**
-     * Gets the {@link ProtocolState} the connection is in
-     *
-     * @return The {@link ProtocolState}
-     */
     ProtocolState getProtocolState();
 
-    /**
-     * Sets the {@link ProtocolState} the connection is in
-     *
-     * @param protocolState The new {@link ProtocolState}
-     */
     void setProtocolState(ProtocolState protocolState);
 
     /**

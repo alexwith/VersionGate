@@ -1,17 +1,16 @@
 package net.versiongate.common.packet;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.packet.IPacketType;
 import net.versiongate.common.gate.GateType;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 
 public class PacketTypes {
-
-    private static final Map<ProtocolState, Map<Integer, IPacketType>> INBOUND = new HashMap<>();
-    private static final Map<ProtocolState, Map<Integer, IPacketType>> OUTBOUND = new HashMap<>();
+    private static final Map<ProtocolState, Map<Integer, IPacketType>> INBOUND = UnifiedMap.newMap();
+    private static final Map<ProtocolState, Map<Integer, IPacketType>> OUTBOUND = UnifiedMap.newMap();
 
     static {
         computeTypes();
@@ -27,7 +26,7 @@ public class PacketTypes {
         final BiConsumer<Map<ProtocolState, Map<Integer, IPacketType>>, IPacketType> populator = (types, type) -> {
             types.compute(type.getStateApplication(), ($, map) -> {
                 if (map == null) {
-                    map = new HashMap<>();
+                    map = UnifiedMap.newMap();
                 }
 
                 map.put(type.getId(), type);

@@ -16,6 +16,11 @@ public enum OutboundPacketStatus implements IPacketType {
     }
 
     @Override
+    public String getName() {
+        return this.name();
+    }
+
+    @Override
     public int getId() {
         return this.id;
     }

@@ -2,12 +2,17 @@ package net.versiongate.common.translation.protocolstate.gate;
 
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.enums.ProtocolState;
+import net.versiongate.common.gate.GateType;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.packet.Packet;
 import net.versiongate.common.translation.protocolstate.type.login.InboundPacketLogin;
 import net.versiongate.common.translation.protocolstate.type.login.OutboundPacketLogin;
 
 public class LoginPacketGate extends PacketGate {
+
+    public LoginPacketGate() {
+        super(GateType.PROTOCOL_STATE);
+    }
 
     @Override
     public void load() {

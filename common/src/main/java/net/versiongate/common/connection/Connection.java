@@ -74,7 +74,13 @@ public class Connection implements IConnection {
         }
 
         this.completeBuffer(buffer, packet::writeTo);
-        System.out.println("translation completed packet: " + packetType + " -> " + bound);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Translated: " + packetType + " -> " + bound);
     }
 
     @Override

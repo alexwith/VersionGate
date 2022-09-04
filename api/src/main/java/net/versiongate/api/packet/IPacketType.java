@@ -6,6 +6,13 @@ import net.versiongate.api.enums.ProtocolState;
 public interface IPacketType {
 
     /**
+     * Get the name of the enum to be used to compare packets between versions
+     *
+     * @return The name of the enum
+     */
+    String getName();
+
+    /**
      * Get the packet id
      *
      * @return The packet id

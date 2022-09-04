@@ -6,19 +6,11 @@ import net.versiongate.api.connection.IConnection;
 
 public interface IPacket {
 
-    /**
-     * Get the {@link IConnection} the packet involves
-     *
-     * @return The {@link IConnection}
-     */
     IConnection getConnection();
 
-    /**
-     * Gets the {@link IPacketType} of this packet
-     *
-     * @return The {@link IPacketType}
-     */
     IPacketType getType();
+
+    void setType(IPacketType type);
 
     /**
      * Cancels the packet

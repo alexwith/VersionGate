@@ -1,22 +1,22 @@
 package net.versiongate.common.packet;
 
 import io.netty.buffer.ByteBuf;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
+import org.eclipse.collections.impl.list.mutable.FastList;
+import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 
 public class Packet implements IPacket {
     private final IConnection connection;
-    private final IPacketType type;
     private final ByteBuf contentBuffer;
-    private final List<Object> content = new ArrayList<>();
-    private final Map<Integer, BufferType> contentTypes = new HashMap<>();
+    private final List<Object> content = FastList.newList();
+    private final Map<Integer, BufferType> contentTypes = UnifiedMap.newMap();
 
+    private IPacketType type;
     private boolean isCancelled;
 
     public Packet(IConnection connection, IPacketType type, ByteBuf contents) {
@@ -36,6 +36,11 @@ public class Packet implements IPacket {
     }
 
     @Override
+    public void setType(IPacketType type) {
+        this.type = type;
+    }
+
+    @Override
     public void cancel() {
         this.isCancelled = true;
     }
@@ -52,7 +57,7 @@ public class Packet implements IPacket {
         }
 
         BufferType.VAR_INT.write(buffer, this.type.getId());
-        
+
         for (int i = 0; i < this.content.size(); i++) {
             final BufferType type = this.contentTypes.get(i);
             final Object value = this.content.get(i);
