@@ -58,7 +58,6 @@ public enum GateType implements IGateType {
         this.protocolGate = protocolGate;
 
         this.computePacketTypes(types);
-        this.mapPacketTypes();
     }
 
     @Override
@@ -86,16 +85,8 @@ public enum GateType implements IGateType {
         return this.mapped.get(packetType);
     }
 
-    @SafeVarargs
-    private final void computePacketTypes(Class<? extends IPacketType>... types) {
-        for (final Class<? extends IPacketType> typeClass : types) {
-            for (final IPacketType type : typeClass.getEnumConstants()) {
-                (type.getPacketBound() == PacketBound.IN ? this.inbound : this.outbound).add(type);
-            }
-        }
-    }
-
-    private void mapPacketTypes() {
+    @Override
+    public void mapPacketTypes() {
         final int index = this.ordinal() - 1;
         if (index < 0) {
             return;
@@ -123,6 +114,15 @@ public enum GateType implements IGateType {
                 }
 
                 previous.mapped.put(previousType, type);
+            }
+        }
+    }
+
+    @SafeVarargs
+    private final void computePacketTypes(Class<? extends IPacketType>... types) {
+        for (final Class<? extends IPacketType> typeClass : types) {
+            for (final IPacketType type : typeClass.getEnumConstants()) {
+                (type.getPacketBound() == PacketBound.IN ? this.inbound : this.outbound).add(type);
             }
         }
     }

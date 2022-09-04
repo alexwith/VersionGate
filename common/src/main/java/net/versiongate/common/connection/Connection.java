@@ -23,7 +23,7 @@ public class Connection implements IConnection {
 
     public Connection(Channel channel) {
         this.channel = channel;
-        this.connectionGate = new ConnectionGate();
+        this.connectionGate = new ConnectionGate(this);
     }
 
     @Override

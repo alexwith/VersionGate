@@ -4,15 +4,10 @@ import com.google.gson.JsonObject;
 import net.versiongate.api.buffer.BufferType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.gate.version.ProtocolVersion;
-import net.versiongate.common.gate.GateType;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.protocolstate.type.status.OutboundPacketStatus;
 
 public class StatusPacketGate extends PacketGate {
-
-    public StatusPacketGate() {
-        super(GateType.PROTOCOL_STATE);
-    }
 
     @Override
     public void load() {

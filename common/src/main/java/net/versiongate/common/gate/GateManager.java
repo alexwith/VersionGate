@@ -1,12 +1,12 @@
 package net.versiongate.common.gate;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import net.versiongate.api.gate.IGate;
 import net.versiongate.api.gate.IGateManager;
 import net.versiongate.api.gate.IGateType;
+import net.versiongate.api.gate.gate.IPacketGate;
 import net.versiongate.api.gate.gate.IProtocolGate;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
@@ -40,34 +40,33 @@ public class GateManager implements IGateManager {
 
     @Override
     public void initialLoad() {
-        for (final IGateType type : GateType.values()) {
-            final IProtocolGate protocolGate = type.getProtocolGate();
-            final Collection<? extends IGate> gates = this.loadGates(protocolGate.packetGates());
+        for (final IGateType gateType : GateType.values()) {
+            gateType.mapPacketTypes();
+
+            final IProtocolGate protocolGate = gateType.getProtocolGate();
+            final Collection<? extends IGate> gates = this.loadPacketGates(gateType, protocolGate.packetGates());
 
             protocolGate.load();
 
-            if (type == GateType.PROTOCOL_STATE) {
+            if (gateType == GateType.PROTOCOL_STATE) {
                 this.handshakingGates.addAll(gates);
-            } else {
-                this.versionGates.compute(type.getProtocolVersion(), ($, mapGates) -> {
-                    if (mapGates == null) {
-                        return UnifiedSet.newSet(gates);
-                    }
-
-                    mapGates.addAll(gates);
-                    return mapGates;
-                });
+                continue;
             }
+
+            this.versionGates.compute(gateType.getProtocolVersion(), ($, mapGates) -> {
+                if (mapGates == null) {
+                    return UnifiedSet.newSet(gates);
+                }
+
+                mapGates.addAll(gates);
+                return mapGates;
+            });
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends IGate> Collection<T> loadGates(T... gates) {
-        return (Collection<T>) this.loadGates(Arrays.asList(gates));
-    }
-
-    private Collection<? extends IGate> loadGates(Collection<? extends IGate> gates) {
-        for (final IGate gate : gates) {
+    private Collection<? extends IGate> loadPacketGates(IGateType gateType, Collection<IPacketGate> gates) {
+        for (final IPacketGate gate : gates) {
+            gate.setGateType(gateType);
             gate.load();
         }
 

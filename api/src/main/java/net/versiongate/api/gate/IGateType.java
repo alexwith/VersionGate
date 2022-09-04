@@ -22,4 +22,6 @@ public interface IGateType {
      * @return Will return null if it is not present
      */
     IPacketType getMappedPacketType(IPacketType packetType);
+
+    void mapPacketTypes();
 }

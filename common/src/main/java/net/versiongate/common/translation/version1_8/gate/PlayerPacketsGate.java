@@ -1,15 +1,10 @@
 package net.versiongate.common.translation.version1_8.gate;
 
 import net.versiongate.api.buffer.BufferType;
-import net.versiongate.common.gate.GateType;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
 
 public class PlayerPacketsGate extends PacketGate {
-
-    public PlayerPacketsGate() {
-        super(GateType.VERSION1_8);
-    }
 
     @Override
     public void load() {
