@@ -4,44 +4,63 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
+import net.versiongate.api.gate.IGateType;
 import net.versiongate.api.packet.IPacketType;
 import net.versiongate.common.gate.GateType;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 
 public class PacketTypes {
-    private static final Map<ProtocolState, Map<Integer, IPacketType>> INBOUND = UnifiedMap.newMap();
-    private static final Map<ProtocolState, Map<Integer, IPacketType>> OUTBOUND = UnifiedMap.newMap();
+    private static final Map<ProtocolState, Map<IGateType, VersionedPackets>> PACKET_TYPES = UnifiedMap.newMap();
 
     static {
         computeTypes();
     }
 
-    public static IPacketType getPacketType(ProtocolState state, PacketBound bound, int packetId) {
-        final Map<Integer, IPacketType> types = (bound == PacketBound.IN ? INBOUND : OUTBOUND).get(state);
+    public static IPacketType getPacketType(IGateType gateType, ProtocolState state, PacketBound bound, int packetId) {
+        final Map<Integer, IPacketType> types = PACKET_TYPES.get(state)
+            .get(state != ProtocolState.PLAY ? GateType.PROTOCOL_STATE : gateType)
+            .getPacketTypes(bound);
 
         return types.get(packetId);
     }
 
     private static void computeTypes() {
-        final BiConsumer<Map<ProtocolState, Map<Integer, IPacketType>>, IPacketType> populator = (types, type) -> {
-            types.compute(type.getStateApplication(), ($, map) -> {
+        final BiConsumer<GateType, IPacketType> populator = (gateType, type) -> {
+            PACKET_TYPES.compute(type.getStateApplication(), ($, map) -> {
                 if (map == null) {
                     map = UnifiedMap.newMap();
                 }
 
-                map.put(type.getId(), type);
+                final VersionedPackets packets = map.computeIfAbsent(gateType, VersionedPackets::new);
+                packets.getPacketTypes(type.getPacketBound()).put(type.getId(), type);
                 return map;
             });
         };
 
         for (final GateType gateType : GateType.values()) {
             for (final IPacketType type : gateType.getInbound()) {
-                populator.accept(INBOUND, type);
+                populator.accept(gateType, type);
             }
 
             for (final IPacketType type : gateType.getOutbound()) {
-                populator.accept(OUTBOUND, type);
+                populator.accept(gateType, type);
             }
+        }
+
+        System.out.println("after: " + PACKET_TYPES.get(ProtocolState.HANDSHAKING).get(GateType.PROTOCOL_STATE));
+    }
+
+    private static class VersionedPackets {
+        private final IGateType gateType;
+        private final Map<Integer, IPacketType> inbound = UnifiedMap.newMap();
+        private final Map<Integer, IPacketType> outbound = UnifiedMap.newMap();
+
+        public VersionedPackets(IGateType gateType) {
+            this.gateType = gateType;
+        }
+
+        public Map<Integer, IPacketType> getPacketTypes(PacketBound bound) {
+            return bound == PacketBound.IN ? this.inbound : this.outbound;
         }
     }
 }

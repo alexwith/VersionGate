@@ -11,6 +11,7 @@ import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
+import net.versiongate.common.gate.GateType;
 import net.versiongate.common.packet.Packet;
 import net.versiongate.common.packet.PacketTypes;
 
@@ -59,7 +60,7 @@ public class Connection implements IConnection {
         }
 
         final int packetId = BufferType.VAR_INT.read(buffer);
-        final IPacketType packetType = PacketTypes.getPacketType(this.protocolState, bound, packetId);
+        final IPacketType packetType = PacketTypes.getPacketType(GateType.VERSION1_8, this.protocolState, bound, packetId);
         if (packetType == null) {
             this.completeBuffer(buffer, (completedBuffer) -> {
                 BufferType.VAR_INT.write(completedBuffer, packetId);
@@ -77,7 +78,7 @@ public class Connection implements IConnection {
         this.completeBuffer(buffer, packet::writeTo);
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
