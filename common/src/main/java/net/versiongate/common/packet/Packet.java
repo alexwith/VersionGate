@@ -4,7 +4,6 @@ import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.Map;
 import net.versiongate.api.buffer.BufferAdapter;
-import net.versiongate.api.buffer.AdapterType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
@@ -57,7 +56,7 @@ public class Packet implements IPacket {
             return;
         }
 
-        AdapterType.VAR_INT.write(buffer, this.type.getId());
+        BufferAdapter.VAR_INT.write(buffer, this.type.getId());
 
         for (int i = 0; i < this.content.size(); i++) {
             final BufferAdapter type = this.bufferAdapters.get(i);

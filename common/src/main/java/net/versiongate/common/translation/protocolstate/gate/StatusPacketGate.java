@@ -1,7 +1,6 @@
 package net.versiongate.common.translation.protocolstate.gate;
 
 import com.google.gson.JsonObject;
-import net.versiongate.api.buffer.AdapterType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.common.gate.gate.PacketGate;
