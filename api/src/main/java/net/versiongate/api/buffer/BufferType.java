@@ -4,12 +4,62 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import io.netty.buffer.ByteBuf;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public enum BufferType {
 
+    INT(
+        ByteBuf::readInt,
+        ByteBuf::writeInt
+    ),
+    UNSIGNED_SHORT(
+        ByteBuf::readUnsignedShort,
+        ByteBuf::writeShort
+    ),
+    BYTE(
+        ByteBuf::readByte,
+        (buffer, value) -> {
+            buffer.writeByte(value);
+        }
+    ),
+    UNSIGNED_BYTE(
+        ByteBuf::readUnsignedByte,
+        (buffer, value) -> {
+            buffer.writeByte(value);
+        }
+    ),
+    SHORT(
+        ByteBuf::readShort,
+        (buffer, value) -> {
+            buffer.writeShort(value);
+        }
+    ),
+    FLOAT(
+        ByteBuf::readFloat,
+        ByteBuf::writeFloat
+    ),
+    DOUBLE(
+        ByteBuf::readDouble,
+        ByteBuf::writeDouble
+    ),
+    LONG(
+        ByteBuf::readLong,
+        ByteBuf::writeLong
+    ),
+    BOOLEAN(
+        ByteBuf::readBoolean,
+        ByteBuf::writeBoolean
+    ),
+    UUID(
+        (buffer) -> new UUID(buffer.readLong(), buffer.readLong()),
+        (buffer, value) -> {
+            buffer.writeLong(value.getMostSignificantBits());
+            buffer.writeLong(value.getLeastSignificantBits());
+        }
+    ),
     VAR_INT(
         (buffer) -> {
             int value = 0;
@@ -41,6 +91,36 @@ public enum BufferType {
             }
         }
     ),
+    VAR_LONG(
+        (buffer) -> {
+            long value = 0;
+            long bytes = 0;
+            byte currentByte;
+
+            do {
+                currentByte = buffer.readByte();
+                value |= (currentByte & 0xF) >> (bytes++ * 7);
+
+                if (bytes > 10) {
+                    throw new RuntimeException("VarLong is too big");
+                }
+            } while ((currentByte & 0x80) == 0x80);
+
+            return value;
+        },
+        (buffer, value) -> {
+            int part;
+            do {
+                part = (int) (value & 0x7F);
+                value >>>= 7;
+
+                if (value != 0) {
+                    part |= 0x80;
+                }
+                buffer.writeByte(part);
+            } while (value != 0);
+        }
+    ),
     STRING(
         (buffer) -> {
             final int length = VAR_INT.read(buffer);
@@ -64,16 +144,7 @@ public enum BufferType {
             BufferType.STRING.write(buffer, value.toString());
         }
     ),
-    UNSIGNED_SHORT(
-        ByteBuf::readUnsignedShort,
-        ByteBuf::writeShort
-    ),
-    BYTE(
-        ByteBuf::readByte,
-        (buffer, value) -> {
-            buffer.writeByte(value);
-        }
-    );
+    ;
 
     private final Function<ByteBuf, Object> reader;
     private final BiConsumer<ByteBuf, Object> writer;
