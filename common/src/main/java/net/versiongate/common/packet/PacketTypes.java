@@ -46,8 +46,6 @@ public class PacketTypes {
                 populator.accept(gateType, type);
             }
         }
-
-        System.out.println("after: " + PACKET_TYPES.get(ProtocolState.HANDSHAKING).get(GateType.PROTOCOL_STATE));
     }
 
     private static class VersionedPackets {

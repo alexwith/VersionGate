@@ -39,9 +39,7 @@ public abstract class PacketGate implements IPacketGate {
     public void translate(IPacket packet) {
         final IPacketType packetType = packet.getType();
         final IPacketType mappedPacketType = this.gateType.getMappedPacketType(packetType);
-        System.out.println("find mapped packet: " + packetType + " -> " + mappedPacketType + " -> " + this.gateType.getClass());
         if (mappedPacketType != null) {
-            System.out.println("found: " + mappedPacketType.getId());
             packet.setType(mappedPacketType);
         }
 

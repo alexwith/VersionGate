@@ -1,6 +1,7 @@
 package net.versiongate.common.platform;
 
 import net.versiongate.api.gate.IGateManager;
+import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.common.gate.GateManager;
 
 public abstract class Platform {
@@ -18,6 +19,8 @@ public abstract class Platform {
         this.gateManager.initialLoad();
     }
 
+    public abstract int getProtocolVersion();
+
     public static Platform get() {
         return INSTANCE;
     }
@@ -33,6 +36,7 @@ public abstract class Platform {
     public void load() {
         try {
             this.injector.inject();
+            this.gateManager.setProtocolVersion(ProtocolVersion.getClosest(this.getProtocolVersion()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -16,7 +16,7 @@ public class GateManager implements IGateManager {
     private final Set<IGate> handshakingGates = UnifiedSet.newSet();
     private final Map<ProtocolVersion, Set<IGate>> versionGates = UnifiedMap.newMap();
 
-    private ProtocolVersion protocolVersion = ProtocolVersion.UNKNOWN;
+    private ProtocolVersion protocolVersion;
 
     @Override
     public ProtocolVersion getProtocolVersion() {
