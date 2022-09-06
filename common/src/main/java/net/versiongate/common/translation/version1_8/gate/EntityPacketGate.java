@@ -23,7 +23,6 @@ public class EntityPacketGate extends PacketGate {
                 BufferAdapter.SHORT // Velocity Z
             );
 
-            packet.cancel(); // temp
         });
     }
 }

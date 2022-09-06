@@ -72,15 +72,18 @@ public class Connection implements IConnection {
         final IPacket packet = new Packet(this, packetType, buffer);
         this.connectionGate.translatePacket(packet);
         if (packet.isCancelled()) {
+            System.out.println("cancelled packet: " + packet);
             return;
         }
 
         this.completeBuffer(buffer, packet::writeTo);
 
-        try {
-            Thread.sleep(750);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (packetType.getStateApplication() == ProtocolState.PLAY) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("Processed: " + packetType + " -> " + bound);
     }
