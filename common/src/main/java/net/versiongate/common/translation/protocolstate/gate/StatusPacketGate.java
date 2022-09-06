@@ -1,6 +1,7 @@
 package net.versiongate.common.translation.protocolstate.gate;
 
 import com.google.gson.JsonObject;
+import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.common.gate.gate.PacketGate;
@@ -12,7 +13,7 @@ public class StatusPacketGate extends PacketGate {
     public void load() {
         this.packetConsumer(OutboundPacketStatus.STATUS_RESPONSE, (packet) -> {
             packet.schema(
-                AdapterType.JSON
+                BufferAdapter.JSON_OBJECT
             );
 
             final IConnection connection = packet.getConnection();
