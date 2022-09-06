@@ -4,7 +4,7 @@ import net.versiongate.api.buffer.BufferType;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
 
-public class PlayerPacketsGate extends PacketGate {
+public class PlayerPacketGate extends PacketGate {
 
     @Override
     public void load() {
