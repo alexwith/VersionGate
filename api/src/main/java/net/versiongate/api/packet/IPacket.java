@@ -1,7 +1,7 @@
 package net.versiongate.api.packet;
 
 import io.netty.buffer.ByteBuf;
-import net.versiongate.api.buffer.BufferType;
+import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.connection.IConnection;
 
 public interface IPacket {
@@ -36,7 +36,7 @@ public interface IPacket {
      *
      * @param types The packet schema
      */
-    void schema(BufferType... types);
+    void schema(BufferAdapter... types);
 
     /**
      * Gets a field from the content cache

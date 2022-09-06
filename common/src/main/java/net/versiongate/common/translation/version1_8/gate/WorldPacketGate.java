@@ -9,7 +9,10 @@ public class WorldPacketGate extends PacketGate {
     public void load() {
         this.packetConsumer(OutboundPacket1_8.MAP_BULK_CHUNK, (packet) -> {
             packet.cancel();
-            System.out.println("cancel map bulk chunk");
+        });
+
+        this.packetConsumer(OutboundPacket1_8.CHUNK_DATA, (packet) -> {
+
         });
     }
 }

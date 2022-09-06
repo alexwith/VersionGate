@@ -3,7 +3,8 @@ package net.versiongate.common.packet;
 import io.netty.buffer.ByteBuf;
 import java.util.List;
 import java.util.Map;
-import net.versiongate.api.buffer.BufferType;
+import net.versiongate.api.buffer.BufferAdapter;
+import net.versiongate.api.buffer.AdapterType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
@@ -14,7 +15,7 @@ public class Packet implements IPacket {
     private final IConnection connection;
     private final ByteBuf contentBuffer;
     private final List<Object> content = FastList.newList();
-    private final Map<Integer, BufferType> contentTypes = UnifiedMap.newMap();
+    private final Map<Integer, BufferAdapter> bufferAdapters = UnifiedMap.newMap();
 
     private IPacketType type;
     private boolean isCancelled;
@@ -56,10 +57,10 @@ public class Packet implements IPacket {
             return;
         }
 
-        BufferType.VAR_INT.write(buffer, this.type.getId());
+        AdapterType.VAR_INT.write(buffer, this.type.getId());
 
         for (int i = 0; i < this.content.size(); i++) {
-            final BufferType type = this.contentTypes.get(i);
+            final BufferAdapter type = this.bufferAdapters.get(i);
             final Object value = this.content.get(i);
             type.write(buffer, value);
         }
@@ -68,12 +69,12 @@ public class Packet implements IPacket {
     }
 
     @Override
-    public void schema(BufferType... types) {
+    public void schema(BufferAdapter... types) {
         for (int i = 0; i < types.length; i++) {
-            final BufferType type = types[i];
+            final BufferAdapter type = types[i];
             final Object value = type.read(this.contentBuffer);
             this.content.add(i, value);
-            this.contentTypes.put(i, type);
+            this.bufferAdapters.put(i, type);
         }
     }
 

@@ -3,7 +3,7 @@ package net.versiongate.common.connection;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import java.util.function.Consumer;
-import net.versiongate.api.buffer.BufferType;
+import net.versiongate.api.buffer.AdapterType;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.connection.IConnectionGate;
 import net.versiongate.api.enums.PacketBound;
@@ -59,11 +59,11 @@ public class Connection implements IConnection {
             return;
         }
 
-        final int packetId = BufferType.VAR_INT.read(buffer);
+        final int packetId = AdapterType.VAR_INT.read(buffer);
         final IPacketType packetType = PacketTypes.getPacketType(GateType.VERSION1_8, this.protocolState, bound, packetId);
         if (packetType == null) {
             this.completeBuffer(buffer, (completedBuffer) -> {
-                BufferType.VAR_INT.write(completedBuffer, packetId);
+                AdapterType.VAR_INT.write(completedBuffer, packetId);
                 completedBuffer.writeBytes(buffer);
             });
             return;

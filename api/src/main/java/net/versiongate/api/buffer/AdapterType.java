@@ -9,7 +9,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public enum BufferType {
+public enum AdapterType implements BufferAdapter {
 
     INT(
         ByteBuf::readInt,
@@ -131,33 +131,34 @@ public enum BufferType {
         },
         (buffer, value) -> {
             final byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
-            BufferType.VAR_INT.write(buffer, bytes.length);
+            AdapterType.VAR_INT.write(buffer, bytes.length);
             buffer.writeBytes(bytes);
         }
     ),
     JSON(
         (buffer) -> {
-            final String jsonString = BufferType.STRING.read(buffer);
+            final String jsonString = AdapterType.STRING.read(buffer);
             return new Gson().fromJson(jsonString, JsonElement.class).getAsJsonObject();
         },
         (buffer, value) -> {
-            BufferType.STRING.write(buffer, value.toString());
+            AdapterType.STRING.write(buffer, value.toString());
         }
-    ),
-    ;
+    );
 
     private final Function<ByteBuf, Object> reader;
     private final BiConsumer<ByteBuf, Object> writer;
 
-    <T> BufferType(Function<ByteBuf, T> reader, BiConsumer<ByteBuf, T> writer) {
+    <T> AdapterType(Function<ByteBuf, T> reader, BiConsumer<ByteBuf, T> writer) {
         this.reader = (Function<ByteBuf, Object>) reader;
         this.writer = (BiConsumer<ByteBuf, Object>) writer;
     }
 
+    @Override
     public <T> T read(ByteBuf buffer) {
-        return (T) this.reader.apply(buffer);
+        return (T) this.reader;
     }
 
+    @Override
     public <T> void write(ByteBuf buffer, T value) {
         this.writer.accept(buffer, value);
     }
