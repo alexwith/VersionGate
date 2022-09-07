@@ -7,4 +7,6 @@ version '0.0.1'
 
 dependencies {
     compileOnly(libs.bundles.common)
+
+    implementation(libs.opennbt)
 }

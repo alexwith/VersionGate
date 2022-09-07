@@ -1,13 +1,15 @@
 [versions]
-ec-ver="11.1.0"
-netty-ver="4.1.77.Final"
-gson-ver="2.9.0"
+ec-ver = "11.1.0"
+netty-ver = "4.1.77.Final"
+gson-ver = "2.9.0"
+opennbt-ver = "2.1"
 
 [libraries]
-ec = { module="org.eclipse.collections:eclipse-collections", version.ref="ec-ver" }
-ec-api = { module="org.eclipse.collections:eclipse-collections-api", version.ref="ec-ver" }
-netty = { module="io.netty:netty-all", version.ref="netty-ver" }
-gson = { module="com.google.code.gson:gson", version.ref="gson-ver" }
+ec = { module = "org.eclipse.collections:eclipse-collections", version.ref = "ec-ver" }
+ec-api = { module = "org.eclipse.collections:eclipse-collections-api", version.ref = "ec-ver" }
+netty = { module = "io.netty:netty-all", version.ref = "netty-ver" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson-ver" }
+opennbt = { module = "com.viaversion:opennbt", version.ref = "opennbt-ver" }
 
 [bundles]
 common = ["ec-api", "ec", "netty", "gson"]
