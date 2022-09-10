@@ -35,14 +35,15 @@ public class ChunkSectionAdapter implements BufferAdapter<ChunkSection> {
             BufferAdapter.VAR_INT.read(buffer);
         }
 
-        final long[] blockData = BufferAdapter.LONG_ARRAY_PRIMITIVE.read(buffer);
+        final long[] blockData = BufferAdapter.LONG_ARRAY.read(buffer);
         if (blockData.length > 0) {
-            int expectedLength = (int) Math.ceil(ChunkSection.SIZE * bitsPerBlock / 64.0);
+            final int expectedLength = (int) Math.ceil(ChunkSection.SIZE * bitsPerBlock / 64.0);
+
             if (blockData.length == expectedLength) {
-                CompactArrayUtil.iterateCompactArray(bitsPerBlock, ChunkSection.SIZE, blockData,
+                /*CompactArrayUtil.iterateCompactArray(bitsPerBlock, ChunkSection.SIZE, blockData,
                     bitsPerBlock == GLOBAL_PALETTE ? section::setFlatBlock
                                                    : section::setPaletteIndex
-                );
+                );*/
             }
         }
 

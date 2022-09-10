@@ -3,6 +3,7 @@ package net.versiongate.api.buffer;
 import io.netty.buffer.ByteBuf;
 import net.versiongate.api.buffer.adapter.ByteBufAdapter;
 import net.versiongate.api.buffer.adapter.JsonObjectAdapter;
+import net.versiongate.api.buffer.adapter.LongArrayAdapter;
 import net.versiongate.api.buffer.adapter.StringAdapter;
 import net.versiongate.api.buffer.adapter.UUIDAdapter;
 import net.versiongate.api.buffer.adapter.VarIntAdapter;
@@ -40,6 +41,8 @@ public interface BufferAdapter<T> {
 
     VarIntAdapter VAR_INT = new VarIntAdapter();
     VarLongAdapter VAR_LONG = new VarLongAdapter();
+
+    LongArrayAdapter LONG_ARRAY = new LongArrayAdapter();
 
     StringAdapter STRING = new StringAdapter();
     UUIDAdapter UUID = new UUIDAdapter();
