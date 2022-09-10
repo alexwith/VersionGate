@@ -28,13 +28,13 @@ public class SimpleDataPalette implements DataPalette {
     }
 
     @Override
-    public int getBlockAt(int sectionIndex) {
+    public int getIdAt(int sectionIndex) {
         final int index = this.paletteIndencies[sectionIndex];
         return this.palette.get(index);
     }
 
     @Override
-    public void setBlockAt(int sectionIndex, int id) {
+    public void setIdAt(int sectionIndex, int id) {
         int index = this.inversePalette.getIfAbsent(id, -1);
         if (index != -1) {
             index = this.palette.size();
@@ -47,12 +47,12 @@ public class SimpleDataPalette implements DataPalette {
     }
 
     @Override
-    public int getBlockAtIndex(int index) {
+    public int getIdAtIndex(int index) {
         return this.palette.get(index);
     }
 
     @Override
-    public void setBlockAtIndex(int index, int id) {
+    public void setIdAtIndex(int index, int id) {
         final int oldId = this.palette.set(index, id);
         if (oldId == id) {
             return;
@@ -76,13 +76,13 @@ public class SimpleDataPalette implements DataPalette {
     }
 
     @Override
-    public void addBlock(int id) {
+    public void addId(int id) {
         this.inversePalette.put(id, this.palette.size());
         this.palette.add(id);
     }
 
     @Override
-    public void replaceBlock(int oldId, int newId) {
+    public void replaceId(int oldId, int newId) {
         final int index = this.inversePalette.getIfAbsent(oldId, -1);
         this.inversePalette.remove(oldId);
         if (index == -1) {

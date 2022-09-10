@@ -48,14 +48,13 @@ public class SimpleChunk implements Chunk {
         int z,
         boolean fullChunk,
         boolean ignoreOldLightData,
-        BitSet chunkSectionBitSet,
+        int bitmask,
         ChunkSection[] sections,
         int[] biomeData,
         CompoundTag heightMap,
-        List<CompoundTag> blockEntities,
-        int bitmask
+        List<CompoundTag> blockEntities
     ) {
-        this(x, z, fullChunk, ignoreOldLightData, chunkSectionBitSet, sections, biomeData, heightMap, blockEntities);
+        this(x, z, fullChunk, ignoreOldLightData, null, sections, biomeData, heightMap, blockEntities);
         this.bitmask = bitmask;
     }
 
@@ -64,12 +63,12 @@ public class SimpleChunk implements Chunk {
         int z,
         boolean fullChunk,
         boolean ignoreOldLightData,
-        BitSet chunkSectionBitSet,
+        int bitmask,
         ChunkSection[] sections,
         int[] biomeData,
         List<CompoundTag> blockEntities
     ) {
-        this(x, z, fullChunk, ignoreOldLightData, chunkSectionBitSet, sections, biomeData, null, blockEntities);
+        this(x, z, fullChunk, ignoreOldLightData, bitmask, sections, biomeData, null, blockEntities);
     }
 
     @Override

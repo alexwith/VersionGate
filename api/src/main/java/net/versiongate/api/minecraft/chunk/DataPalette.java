@@ -4,17 +4,17 @@ public interface DataPalette {
 
     int sectionIndex(int x, int y, int z);
 
-    int getBlockAt(int sectionIndex);
+    int getIdAt(int sectionIndex);
 
-    void setBlockAt(int sectionIndex, int id);
+    void setIdAt(int sectionIndex, int id);
 
-    int getBlockAtIndex(int index);
+    int getIdAtIndex(int index);
 
-    void setBlockAtIndex(int index, int id);
+    void setIdAtIndex(int index, int id);
 
-    void addBlock(int id);
+    void addId(int id);
 
-    void replaceBlock(int oldId, int newId);
+    void replaceId(int oldId, int newId);
 
     int getPaletteIndexAt(int sectionIndex);
 
@@ -24,13 +24,13 @@ public interface DataPalette {
 
     void clear();
 
-    default int getBlockAt(int sectionX, int sectionY, int sectionZ) {
+    default int getIdAt(int sectionX, int sectionY, int sectionZ) {
         final int sectionIndex = this.sectionIndex(sectionX, sectionY, sectionZ);
-        return this.getBlockAt(sectionIndex);
+        return this.getIdAt(sectionIndex);
     }
 
-    default void setBlockAt(int sectionX, int sectionY, int sectionZ, int id) {
+    default void setIdAt(int sectionX, int sectionY, int sectionZ, int id) {
         final int sectionIndex = this.sectionIndex(sectionX, sectionY, sectionZ);
-        this.setBlockAt(sectionIndex, id);
+        this.setIdAt(sectionIndex, id);
     }
 }

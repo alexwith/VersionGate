@@ -69,6 +69,8 @@ public class Packet implements IPacket {
 
     @Override
     public void schema(BufferAdapter... types) {
+        this.bufferAdapters.clear();
+
         for (int i = 0; i < types.length; i++) {
             final BufferAdapter type = types[i];
             final Object value = type.read(this.contentBuffer);
