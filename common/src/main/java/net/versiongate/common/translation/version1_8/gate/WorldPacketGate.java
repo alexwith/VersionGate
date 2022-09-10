@@ -5,6 +5,7 @@ import net.versiongate.api.minecraft.chunk.Chunk;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.version1_8.buffer.BufferAdapter1_8;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
+import net.versiongate.common.translation.version1_9.buffer.BufferAdapter1_9;
 import net.versiongate.common.translation.version1_9.type.OutboundPacket1_9;
 
 public class WorldPacketGate extends PacketGate {
@@ -33,7 +34,11 @@ public class WorldPacketGate extends PacketGate {
                 return;
             }
 
-            
+            packet.schema(
+                BufferAdapter1_9.CHUNK
+            );
+
+            packet.setField(0, chunk);
         });
     }
 }
