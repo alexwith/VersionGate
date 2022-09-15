@@ -9,7 +9,7 @@ import net.versiongate.common.platform.PlatformInjector;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 
-public class BukkitInjector implements PlatformInjector {
+public class BukkitInjector extends PlatformInjector {
 
     @Override
     @SuppressWarnings("unchecked")

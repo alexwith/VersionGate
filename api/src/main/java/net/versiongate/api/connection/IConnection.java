@@ -1,11 +1,14 @@
 package net.versiongate.api.connection;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.enums.ProtocolState;
 import net.versiongate.api.gate.version.ProtocolVersion;
 
 public interface IConnection {
+
+    Channel getChannel();
 
     ProtocolVersion getProtocolVersion();
 

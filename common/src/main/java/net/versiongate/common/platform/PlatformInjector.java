@@ -9,14 +9,19 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface PlatformInjector {
+public abstract class PlatformInjector {
+    private PlatformChannelInitializer channelInitializer;
 
     /**
      * Called on all platforms to inject a potential "Listener"
      */
-    void inject() throws Exception;
+    public abstract void inject() throws Exception;
 
-    default ChannelHandler findChannelHandler(ChannelPipeline pipeline) {
+    public PlatformChannelInitializer getChannelInitializer() {
+        return this.channelInitializer;
+    }
+
+    public ChannelHandler findChannelHandler(ChannelPipeline pipeline) {
         for (final String name : pipeline.names()) {
             final ChannelHandler handler = pipeline.get(name);
 
@@ -32,7 +37,7 @@ public interface PlatformInjector {
         return pipeline.first();
     }
 
-    default List<ChannelFuture> createInjectorList(List<ChannelFuture> origin, ChannelInitializerCreator channelInitializerCreator) {
+    public List<ChannelFuture> createInjectorList(List<ChannelFuture> origin, ChannelInitializerCreator channelInitializerCreator) {
         return new ArrayList<ChannelFuture>(origin) {
 
             @Override
@@ -49,7 +54,7 @@ public interface PlatformInjector {
     }
 
     @SuppressWarnings("unchecked")
-    default void injectChannelFuture(ChannelFuture future, ChannelInitializerCreator channelInitializerCreator) throws Exception {
+    public void injectChannelFuture(ChannelFuture future, ChannelInitializerCreator channelInitializerCreator) throws Exception {
         final ChannelPipeline pipeline = future.channel().pipeline();
         final ChannelHandler handler = this.findChannelHandler(pipeline);
 
@@ -57,10 +62,12 @@ public interface PlatformInjector {
         childHandler.setAccessible(true);
 
         final ChannelInitializer<Channel> oldInitializer = (ChannelInitializer<Channel>) childHandler.get(handler);
-        childHandler.set(handler, channelInitializerCreator.create(oldInitializer));
+        this.channelInitializer = channelInitializerCreator.create(oldInitializer);
+
+        childHandler.set(handler, this.channelInitializer);
     }
 
-    interface ChannelInitializerCreator {
+    public interface ChannelInitializerCreator {
 
         /**
          * Create the {@link PlatformChannelInitializer}

@@ -52,7 +52,7 @@ public class WorldPacketGate extends PacketGate {
             packet.schema(
                 BufferAdapter1_9.CHUNK
             );
-            
+
             packet.setField(0, chunk);
         });
     }

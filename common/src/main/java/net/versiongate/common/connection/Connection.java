@@ -28,6 +28,11 @@ public class Connection implements IConnection {
     }
 
     @Override
+    public Channel getChannel() {
+        return this.channel;
+    }
+
+    @Override
     public ProtocolVersion getProtocolVersion() {
         return this.protocolVersion;
     }
@@ -72,7 +77,6 @@ public class Connection implements IConnection {
         final IPacket packet = new Packet(this, packetType, buffer);
         this.connectionGate.translatePacket(packet);
         if (packet.isCancelled()) {
-            System.out.println("cancelled packet: " + packet);
             return;
         }
 
@@ -80,7 +84,7 @@ public class Connection implements IConnection {
 
         if (packetType.getStateApplication() == ProtocolState.PLAY) {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(900);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

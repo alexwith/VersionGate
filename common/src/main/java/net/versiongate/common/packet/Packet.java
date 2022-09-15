@@ -1,12 +1,18 @@
 package net.versiongate.common.packet;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
 import java.util.List;
 import java.util.Map;
 import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.connection.IConnection;
+import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
+import net.versiongate.common.platform.Platform;
+import net.versiongate.common.platform.PlatformChannelInitializer;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 
@@ -92,6 +98,27 @@ public class Packet implements IPacket {
 
     @Override
     public void send() {
+        if (this.isCancelled) {
+            return;
+        }
 
+        final ByteBuf buffer = Unpooled.buffer();
+        this.writeTo(buffer);
+
+        final Channel channel = this.connection.getChannel();
+        channel.eventLoop().submit(() -> {
+            final PlatformChannelInitializer initializer = Platform.get().getInjector().getChannelInitializer();
+            if (initializer == null) {
+                throw new IllegalStateException("The PlatformChannelInitializer is null while sending packet");
+            }
+
+            final boolean isOutbound = this.type.getPacketBound() == PacketBound.OUT;
+            final ChannelHandlerContext context = channel.pipeline().context(isOutbound ? initializer.getDecoderName() : initializer.getEncoderName());
+            if (isOutbound) {
+                context.fireChannelRead(buffer);
+            } else {
+                context.writeAndFlush(buffer);
+            }
+        });
     }
 }

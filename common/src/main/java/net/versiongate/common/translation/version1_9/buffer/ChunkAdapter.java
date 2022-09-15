@@ -32,7 +32,7 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
 
         for (int i = 0; i < 16; i++) {
             if (!usedSections.get(i)) {
-                continue; // Section not set
+                continue;
             }
 
             final IChunkSection section = BufferAdapter1_9.CHUNK_SECTION.read(buffer);

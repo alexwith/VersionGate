@@ -16,9 +16,8 @@ import net.versiongate.api.enums.PacketBound;
 public abstract class PlatformChannelInitializer extends ChannelInitializer<Channel> {
     protected final IConnectionManager connectionManager;
     protected final ChannelInitializer<?> initializer;
-
-    protected static final String DECODER_NAME = "version-gate-decoder";
-    protected static final String ENCODER_NAME = "version-gate-encoder";
+    protected final String decoderName;
+    protected final String encoderName;
 
     private static final Method INIT_CHANNEL_METHOD;
 
@@ -31,9 +30,11 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
         }
     }
 
-    public PlatformChannelInitializer(IConnectionManager connectionManager, ChannelInitializer<?> initializer) {
+    public PlatformChannelInitializer(IConnectionManager connectionManager, ChannelInitializer<?> initializer, String decoderName, String encoderName) {
         this.connectionManager = connectionManager;
         this.initializer = initializer;
+        this.decoderName = decoderName;
+        this.encoderName = encoderName;
     }
 
     /**
@@ -51,6 +52,14 @@ public abstract class PlatformChannelInitializer extends ChannelInitializer<Chan
      * @param pipeline   The {@link ChannelPipeline } that will have its decoder replaced
      */
     public abstract void pipelineDecoder(IConnection connection, ChannelPipeline pipeline);
+
+    public String getDecoderName() {
+        return this.decoderName;
+    }
+
+    public String getEncoderName() {
+        return this.encoderName;
+    }
 
     @Override
     protected void initChannel(Channel channel) throws Exception {
