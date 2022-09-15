@@ -1,21 +1,21 @@
 package net.versiongate.api.minecraft.chunk.simple;
 
-import net.versiongate.api.minecraft.chunk.DataPalette;
+import net.versiongate.api.minecraft.chunk.IDataPalette;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 
 // Credit to ViaVersion
-public class SimpleDataPalette implements DataPalette {
+public class DataPalette implements IDataPalette {
     private final IntArrayList palette;
     private final IntIntHashMap inversePalette;
     private final int[] paletteIndencies;
     private final int sizedBits;
 
-    public SimpleDataPalette(int valuesLength) {
+    public DataPalette(int valuesLength) {
         this(valuesLength, 8);
     }
 
-    public SimpleDataPalette(int valuesLength, int expectedPaletteLength) {
+    public DataPalette(int valuesLength, int expectedPaletteLength) {
         this.palette = new IntArrayList();
         this.inversePalette = new IntIntHashMap(expectedPaletteLength);
         this.paletteIndencies = new int[valuesLength];

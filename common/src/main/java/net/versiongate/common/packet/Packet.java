@@ -89,4 +89,9 @@ public class Packet implements IPacket {
     public <T> void setField(int index, T value) {
         this.content.set(index, value);
     }
+
+    @Override
+    public void send() {
+
+    }
 }

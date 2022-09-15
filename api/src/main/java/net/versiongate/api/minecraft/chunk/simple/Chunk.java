@@ -4,11 +4,11 @@ import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import java.util.BitSet;
 import java.util.List;
 import net.versiongate.api.minecraft.block.BlockEntity;
-import net.versiongate.api.minecraft.chunk.Chunk;
-import net.versiongate.api.minecraft.chunk.ChunkSection;
+import net.versiongate.api.minecraft.chunk.IChunk;
+import net.versiongate.api.minecraft.chunk.IChunkSection;
 
 // Credit ViaVersion
-public class SimpleChunk implements Chunk {
+public class Chunk implements IChunk {
     protected final int x;
     protected final int z;
     protected boolean fullChunk;
@@ -16,18 +16,18 @@ public class SimpleChunk implements Chunk {
     protected boolean ignoreOldLightData;
     protected BitSet chunkSectionBitSet;
     protected int bitmask;
-    protected ChunkSection[] sections;
+    protected IChunkSection[] sections;
     protected int[] biomeData;
     protected CompoundTag heightMap;
     protected final List<CompoundTag> blockEntities;
 
-    public SimpleChunk(
+    public Chunk(
         int x,
         int z,
         boolean fullChunk,
         boolean ignoreOldLightData,
         BitSet chunkSectionBitSet,
-        ChunkSection[] sections,
+        IChunkSection[] sections,
         int[] biomeData,
         CompoundTag heightMap,
         List<CompoundTag> blockEntities
@@ -43,13 +43,13 @@ public class SimpleChunk implements Chunk {
         this.blockEntities = blockEntities;
     }
 
-    public SimpleChunk(
+    public Chunk(
         int x,
         int z,
         boolean fullChunk,
         boolean ignoreOldLightData,
         int bitmask,
-        ChunkSection[] sections,
+        IChunkSection[] sections,
         int[] biomeData,
         CompoundTag heightMap,
         List<CompoundTag> blockEntities
@@ -58,13 +58,13 @@ public class SimpleChunk implements Chunk {
         this.bitmask = bitmask;
     }
 
-    public SimpleChunk(
+    public Chunk(
         int x,
         int z,
         boolean fullChunk,
         boolean ignoreOldLightData,
         int bitmask,
-        ChunkSection[] sections,
+        IChunkSection[] sections,
         int[] biomeData,
         List<CompoundTag> blockEntities
     ) {
@@ -117,12 +117,12 @@ public class SimpleChunk implements Chunk {
     }
 
     @Override
-    public ChunkSection[] getSections() {
+    public IChunkSection[] getSections() {
         return this.sections;
     }
 
     @Override
-    public void setSections(ChunkSection[] sections) {
+    public void setSections(IChunkSection[] sections) {
         this.sections = sections;
     }
 

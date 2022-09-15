@@ -8,4 +8,6 @@ version '0.0.1'
 dependencies {
     compileOnly(projects.api)
     compileOnly(libs.bundles.common)
+
+    implementation(libs.opennbt)
 }

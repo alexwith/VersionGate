@@ -35,7 +35,7 @@ public class NibbleArray {
     }
 
     public byte get(int x, int y, int z) {
-        return this.get(ChunkSection.sectionIndex(x, y, z));
+        return this.get(IChunkSection.sectionIndex(x, y, z));
     }
 
     public byte get(int index) {
@@ -44,7 +44,7 @@ public class NibbleArray {
     }
 
     public void set(int x, int y, int z, int value) {
-        this.set(ChunkSection.sectionIndex(x, y, z), value);
+        this.set(IChunkSection.sectionIndex(x, y, z), value);
     }
 
     public void set(int index, int value) {

@@ -5,7 +5,7 @@ import java.util.BitSet;
 import java.util.List;
 import net.versiongate.api.minecraft.block.BlockEntity;
 
-public interface Chunk {
+public interface IChunk {
 
     int getX();
 
@@ -25,9 +25,9 @@ public interface Chunk {
 
     void setChunkMask(BitSet chunkSectionMask);
 
-    ChunkSection[] getSections();
+    IChunkSection[] getSections();
 
-    void setSections(ChunkSection[] sections);
+    void setSections(IChunkSection[] sections);
 
     int[] getBiomeData();
 

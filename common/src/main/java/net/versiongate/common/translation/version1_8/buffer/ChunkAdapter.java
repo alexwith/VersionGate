@@ -4,15 +4,15 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import java.util.ArrayList;
 import net.versiongate.api.buffer.BufferAdapter;
-import net.versiongate.api.minecraft.chunk.Chunk;
-import net.versiongate.api.minecraft.chunk.ChunkSection;
-import net.versiongate.api.minecraft.chunk.ChunkSectionLight;
-import net.versiongate.api.minecraft.chunk.simple.SimpleChunk;
+import net.versiongate.api.minecraft.chunk.IChunk;
+import net.versiongate.api.minecraft.chunk.IChunkSection;
+import net.versiongate.api.minecraft.chunk.IChunkSectionLight;
+import net.versiongate.api.minecraft.chunk.simple.Chunk;
 
-public class ChunkAdapter implements BufferAdapter<Chunk> {
+public class ChunkAdapter implements BufferAdapter<IChunk> {
 
     @Override
-    public Chunk read(ByteBuf buffer) {
+    public IChunk read(ByteBuf buffer) {
         final int chunkX = buffer.readInt();
         final int chunkZ = buffer.readInt();
 
@@ -24,7 +24,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
         buffer.readBytes(data);
 
         if (fullChunk && bitmask == 0) {
-            return new SimpleChunk(chunkX, chunkZ, true, false, 0, new ChunkSection[16], null, new ArrayList<>());
+            return new Chunk(chunkX, chunkZ, true, false, 0, new IChunkSection[16], null, new ArrayList<>());
         }
 
         final boolean hasSkyLight = true; //Environment.NORMAL
@@ -32,7 +32,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
     }
 
     @Override
-    public void write(ByteBuf buffer, Chunk chunk) {
+    public void write(ByteBuf buffer, IChunk chunk) {
         buffer.writeInt(chunk.getX());
         buffer.writeInt(chunk.getZ());
         buffer.writeBoolean(chunk.isFullChunk());
@@ -44,10 +44,10 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
         buffer.writeBytes(data);
     }
 
-    private Chunk deserialize(final int chunkX, final int chunkZ, final boolean fullChunk, final boolean skyLight, final int bitmask, final byte[] data) {
+    public IChunk deserialize(final int chunkX, final int chunkZ, final boolean fullChunk, final boolean skyLight, final int bitmask, final byte[] data) {
         final ByteBuf input = Unpooled.wrappedBuffer(data);
 
-        final ChunkSection[] sections = new ChunkSection[16];
+        final IChunkSection[] sections = new IChunkSection[16];
         for (int i = 0; i < sections.length; i++) {
             if ((bitmask & 1 << i) == 0) {
                 continue;
@@ -61,7 +61,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
                 continue;
             }
 
-            final ChunkSectionLight light = sections[i].getLight();
+            final IChunkSectionLight light = sections[i].getLight();
             light.readBlockLight(input);
         }
 
@@ -71,7 +71,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
                     continue;
                 }
 
-                final ChunkSectionLight light = sections[i].getLight();
+                final IChunkSectionLight light = sections[i].getLight();
                 light.readSkyLight(input);
             }
         }
@@ -85,14 +85,14 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
 
         input.release();
 
-        return new SimpleChunk(chunkX, chunkZ, fullChunk, false, bitmask, sections, biomeData, new ArrayList<>());
+        return new Chunk(chunkX, chunkZ, fullChunk, false, bitmask, sections, biomeData, new ArrayList<>());
     }
 
-    private byte[] serialize(final Chunk chunk) {
+    public byte[] serialize(final IChunk chunk) {
         final ByteBuf output = Unpooled.buffer();
 
         final int bitmask = chunk.getBitmask();
-        final ChunkSection[] sections = chunk.getSections();
+        final IChunkSection[] sections = chunk.getSections();
 
         for (int i = 0; i < sections.length; i++) {
             if ((bitmask & 1 << i) == 0) {
@@ -106,7 +106,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
                 continue;
             }
 
-            final ChunkSectionLight light = sections[i].getLight();
+            final IChunkSectionLight light = sections[i].getLight();
             light.writeBlockLight(output);
         }
 
@@ -115,7 +115,7 @@ public class ChunkAdapter implements BufferAdapter<Chunk> {
                 continue;
             }
 
-            final ChunkSectionLight light = sections[i].getLight();
+            final IChunkSectionLight light = sections[i].getLight();
             if (!light.hasSkyLight()) {
                 continue;
             }

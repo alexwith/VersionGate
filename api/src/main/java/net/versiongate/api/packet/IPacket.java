@@ -55,4 +55,9 @@ public interface IPacket {
      * @param <T>   The type of the value
      */
     <T> void setField(int index, T value);
+
+    /**
+     * Send the packet with force
+     */
+    void send();
 }

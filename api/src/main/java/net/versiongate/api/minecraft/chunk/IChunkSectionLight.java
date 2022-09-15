@@ -2,7 +2,7 @@ package net.versiongate.api.minecraft.chunk;
 
 import io.netty.buffer.ByteBuf;
 
-public interface ChunkSectionLight {
+public interface IChunkSectionLight {
 
     int LIGHT_LENGTH = 16 * 16 * 16 / 2;
 

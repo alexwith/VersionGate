@@ -1,17 +1,17 @@
 package net.versiongate.api.minecraft.chunk.simple;
 
 import io.netty.buffer.ByteBuf;
-import net.versiongate.api.minecraft.chunk.ChunkSection;
-import net.versiongate.api.minecraft.chunk.ChunkSectionLight;
+import net.versiongate.api.minecraft.chunk.IChunkSection;
+import net.versiongate.api.minecraft.chunk.IChunkSectionLight;
 import net.versiongate.api.minecraft.chunk.NibbleArray;
 
 // Credit ViaVersion
-public class SimpleChunkSectionLight implements ChunkSectionLight {
+public class ChunkSectionLight implements IChunkSectionLight {
     private NibbleArray blockLight;
     private NibbleArray skyLight;
 
-    public SimpleChunkSectionLight() {
-        this.blockLight = new NibbleArray(ChunkSection.SIZE);
+    public ChunkSectionLight() {
+        this.blockLight = new NibbleArray(IChunkSection.SIZE);
     }
 
     @Override

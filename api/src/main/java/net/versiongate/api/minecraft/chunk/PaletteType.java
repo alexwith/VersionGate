@@ -2,8 +2,8 @@ package net.versiongate.api.minecraft.chunk;
 
 // Credit ViaVersion
 public enum PaletteType {
-    BLOCKS(ChunkSection.SIZE, 8),
-    BIOMES(ChunkSection.BIOME_SIZE, 3);
+    BLOCKS(IChunkSection.SIZE, 8),
+    BIOMES(IChunkSection.BIOME_SIZE, 3);
 
     private final int size;
     private final int highestBitsPerValue;

@@ -1,6 +1,6 @@
 package net.versiongate.api.minecraft.chunk;
 
-public interface ChunkSection {
+public interface IChunkSection {
     int SIZE = 16 * 16 * 16;
     int BIOME_SIZE = 4 * 4 * 4;
 
@@ -8,17 +8,17 @@ public interface ChunkSection {
         return y << 8 | z << 4 | x;
     }
 
-    ChunkSectionLight getLight();
+    IChunkSectionLight getLight();
 
-    void setLight(ChunkSectionLight light);
+    void setLight(IChunkSectionLight light);
 
     int getNonAirBlocksCount();
 
     void setNonAirBlocksCount(int count);
 
-    DataPalette getPalette(PaletteType type);
+    IDataPalette getPalette(PaletteType type);
 
-    void addPalette(PaletteType type, DataPalette palette);
+    void addPalette(PaletteType type, IDataPalette palette);
 
     void removePalette(PaletteType type);
 }

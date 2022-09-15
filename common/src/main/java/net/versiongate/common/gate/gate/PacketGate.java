@@ -1,12 +1,15 @@
 package net.versiongate.common.gate.gate;
 
+import io.netty.buffer.Unpooled;
 import java.util.Map;
+import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.gate.IGateManager;
 import net.versiongate.api.gate.IGateType;
 import net.versiongate.api.gate.application.IPacketConsumer;
 import net.versiongate.api.gate.gate.IPacketGate;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
+import net.versiongate.common.packet.Packet;
 import net.versiongate.common.platform.Platform;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 
@@ -53,5 +56,10 @@ public abstract class PacketGate implements IPacketGate {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public IPacket createPacket(IConnection connection, IPacketType packetType) {
+        return new Packet(connection, packetType, Unpooled.buffer());
     }
 }

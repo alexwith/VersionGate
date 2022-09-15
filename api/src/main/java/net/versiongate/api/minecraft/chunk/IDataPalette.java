@@ -1,6 +1,6 @@
 package net.versiongate.api.minecraft.chunk;
 
-public interface DataPalette {
+public interface IDataPalette {
 
     int sectionIndex(int x, int y, int z);
 
