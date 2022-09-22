@@ -84,7 +84,7 @@ public class Connection implements IConnection {
 
         if (packetType.getStateApplication() == ProtocolState.PLAY) {
             try {
-                Thread.sleep(900);
+                Thread.sleep(750);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

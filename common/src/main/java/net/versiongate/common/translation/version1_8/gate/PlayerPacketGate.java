@@ -17,5 +17,9 @@ public class PlayerPacketGate extends PacketGate {
             final int action = packet.getField(0);
             final int playerCount = packet.getField(1);
         });
+
+        this.packetConsumer(OutboundPacket1_8.PLAYER_POSITION, (packet) -> {
+
+        });
     }
 }

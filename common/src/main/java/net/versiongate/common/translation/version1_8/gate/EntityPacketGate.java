@@ -23,6 +23,31 @@ public class EntityPacketGate extends PacketGate {
                 BufferAdapter.SHORT // Velocity Z
             );
 
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.ENTITY_METADATA, (packet) -> {
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.ENTITY_PROPERTIES, (packet) -> {
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.ENTITY_HEAD_LOOK, (packet) -> {
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.ENTITY_VELOCITY, (packet) -> {
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.ENTITY_TELEPORT, (packet) -> {
+            packet.cancel();
+        });
+
+        this.packetConsumer(OutboundPacket1_8.BLOCK_ENTITY_DATA, (packet) -> {
+            packet.cancel();
         });
     }
 }
