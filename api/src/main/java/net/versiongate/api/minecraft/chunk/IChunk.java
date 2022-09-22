@@ -3,7 +3,7 @@ package net.versiongate.api.minecraft.chunk;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import java.util.BitSet;
 import java.util.List;
-import net.versiongate.api.minecraft.block.BlockEntity;
+import net.versiongate.api.minecraft.block.IBlockEntity;
 
 public interface IChunk {
 
@@ -39,5 +39,5 @@ public interface IChunk {
 
     List<CompoundTag> getBlockEntities();
 
-    List<BlockEntity> blockEntities();
+    List<IBlockEntity> blockEntities();
 }

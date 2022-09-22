@@ -3,7 +3,7 @@ package net.versiongate.api.minecraft.chunk.simple;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import java.util.BitSet;
 import java.util.List;
-import net.versiongate.api.minecraft.block.BlockEntity;
+import net.versiongate.api.minecraft.block.IBlockEntity;
 import net.versiongate.api.minecraft.chunk.IChunk;
 import net.versiongate.api.minecraft.chunk.IChunkSection;
 
@@ -152,7 +152,7 @@ public class Chunk implements IChunk {
     }
 
     @Override
-    public List<BlockEntity> blockEntities() {
+    public List<IBlockEntity> blockEntities() {
         return null;
     }
 }

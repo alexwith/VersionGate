@@ -1,7 +1,6 @@
 package net.versiongate.common.packet;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import java.util.List;
@@ -79,7 +78,7 @@ public class Packet implements IPacket {
 
         for (int i = 0; i < types.length; i++) {
             final BufferAdapter type = types[i];
-            final Object value = type.read(this.contentBuffer);
+            final Object value = this.contentBuffer.isReadable() ? type.read(this.contentBuffer) : null;
             this.content.add(i, value);
             this.bufferAdapters.put(i, type);
         }
@@ -102,10 +101,10 @@ public class Packet implements IPacket {
             return;
         }
 
-        final ByteBuf buffer = Unpooled.buffer();
+        final Channel channel = this.connection.getChannel();
+        final ByteBuf buffer = channel.alloc().buffer();
         this.writeTo(buffer);
 
-        final Channel channel = this.connection.getChannel();
         channel.eventLoop().submit(() -> {
             final PlatformChannelInitializer initializer = Platform.get().getInjector().getChannelInitializer();
             if (initializer == null) {

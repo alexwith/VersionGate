@@ -8,7 +8,7 @@ import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 public class DataPalette implements IDataPalette {
     private final IntArrayList palette;
     private final IntIntHashMap inversePalette;
-    private final int[] paletteIndencies;
+    private final int[] paletteIndecencies;
     private final int sizedBits;
 
     public DataPalette(int valuesLength) {
@@ -18,7 +18,7 @@ public class DataPalette implements IDataPalette {
     public DataPalette(int valuesLength, int expectedPaletteLength) {
         this.palette = new IntArrayList();
         this.inversePalette = new IntIntHashMap(expectedPaletteLength);
-        this.paletteIndencies = new int[valuesLength];
+        this.paletteIndecencies = new int[valuesLength];
         this.sizedBits = Integer.numberOfLeadingZeros(valuesLength) / 3;
     }
 
@@ -29,21 +29,21 @@ public class DataPalette implements IDataPalette {
 
     @Override
     public int getIdAt(int sectionIndex) {
-        final int index = this.paletteIndencies[sectionIndex];
+        final int index = this.paletteIndecencies[sectionIndex];
         return this.palette.get(index);
     }
 
     @Override
     public void setIdAt(int sectionIndex, int id) {
         int index = this.inversePalette.getIfAbsent(id, -1);
-        if (index != -1) {
+        if (index == -1) {
             index = this.palette.size();
 
             this.palette.add(id);
             this.inversePalette.put(id, index);
         }
 
-        this.paletteIndencies[sectionIndex] = index;
+        this.paletteIndecencies[sectionIndex] = index;
     }
 
     @Override
@@ -101,12 +101,12 @@ public class DataPalette implements IDataPalette {
 
     @Override
     public int getPaletteIndexAt(int sectionIndex) {
-        return this.paletteIndencies[sectionIndex];
+        return this.paletteIndecencies[sectionIndex];
     }
 
     @Override
     public void setPaletteIndexAt(int sectionIndex, int index) {
-        this.paletteIndencies[sectionIndex] = index;
+        this.paletteIndecencies[sectionIndex] = index;
     }
 
     @Override

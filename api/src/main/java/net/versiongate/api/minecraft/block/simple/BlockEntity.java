@@ -1,16 +1,16 @@
 package net.versiongate.api.minecraft.block.simple;
 
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
-import net.versiongate.api.minecraft.block.BlockEntity;
+import net.versiongate.api.minecraft.block.IBlockEntity;
 
 // Credit ViaVersion
-public class SimpleBlockEntity implements BlockEntity {
+public class BlockEntity implements IBlockEntity {
     private final byte xzIndex;
     private final short y;
     private final int typeId;
     private final CompoundTag tag;
 
-    public SimpleBlockEntity(byte xzIndex, short y, int typeId, CompoundTag tag) {
+    public BlockEntity(byte xzIndex, short y, int typeId, CompoundTag tag) {
         this.xzIndex = xzIndex;
         this.y = y;
         this.typeId = typeId;

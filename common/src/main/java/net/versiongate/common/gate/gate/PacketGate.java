@@ -1,6 +1,6 @@
 package net.versiongate.common.gate.gate;
 
-import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import java.util.Map;
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.gate.IGateManager;
@@ -60,6 +60,7 @@ public abstract class PacketGate implements IPacketGate {
 
     @Override
     public IPacket createPacket(IConnection connection, IPacketType packetType) {
-        return new Packet(connection, packetType, Unpooled.buffer());
+        final Channel channel = connection.getChannel();
+        return new Packet(connection, packetType, channel.alloc().buffer());
     }
 }
