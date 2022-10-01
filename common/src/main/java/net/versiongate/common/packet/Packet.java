@@ -101,10 +101,8 @@ public class Packet implements IPacket {
             return;
         }
 
+        final ByteBuf buffer = this.toBuffer();
         final Channel channel = this.connection.getChannel();
-        final ByteBuf buffer = channel.alloc().buffer();
-        this.writeTo(buffer);
-
         channel.eventLoop().submit(() -> {
             final PlatformChannelInitializer initializer = Platform.get().getInjector().getChannelInitializer();
             if (initializer == null) {
@@ -118,6 +116,19 @@ public class Packet implements IPacket {
             } else {
                 context.writeAndFlush(buffer);
             }
+
+            buffer.release();
         });
+    }
+
+    private ByteBuf toBuffer() {
+        final Channel channel = this.connection.getChannel();
+        final ByteBuf buffer = channel.alloc().buffer();
+        try {
+            this.writeTo(buffer);
+            return buffer.retain();
+        } finally {
+            buffer.release();
+        }
     }
 }
