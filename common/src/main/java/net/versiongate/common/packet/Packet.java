@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.connection.IConnection;
-import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.api.packet.IPacketType;
 import net.versiongate.common.platform.Platform;
@@ -62,7 +61,6 @@ public class Packet implements IPacket {
         }
 
         BufferAdapter.VAR_INT.write(buffer, this.type.getId());
-        System.out.println("wrote id: " + this.type.getId());
 
         for (int i = 0; i < this.content.size(); i++) {
             final BufferAdapter type = this.bufferAdapters.get(i);
@@ -102,26 +100,15 @@ public class Packet implements IPacket {
             return;
         }
 
-        System.out.println("Sending packet: " + this.type + " -> " + this.content.size());
-
         final ByteBuf buffer = this.toBuffer();
         final Channel channel = this.connection.getChannel();
-        //channel.eventLoop().submit(() -> {
         final PlatformChannelInitializer initializer = Platform.get().getInjector().getChannelInitializer();
         if (initializer == null) {
             throw new IllegalStateException("The PlatformChannelInitializer is null while sending packet");
         }
 
-        final boolean isOutbound = this.type.getPacketBound() == PacketBound.OUT;
-        final ChannelHandlerContext context = channel.pipeline().context(isOutbound ? initializer.getDecoderName() : initializer.getEncoderName());
-        System.out.println("we have the context: " + context + " -> outbound:" + isOutbound);
-        if (isOutbound) {
-            context.fireChannelRead(buffer);
-        } else {
-            context.writeAndFlush(buffer);
-        }
-        System.out.println("completed context");
-        //});
+        final ChannelHandlerContext context = channel.pipeline().context(initializer.getEncoderName());
+        context.writeAndFlush(buffer);
     }
 
     private ByteBuf toBuffer() {
