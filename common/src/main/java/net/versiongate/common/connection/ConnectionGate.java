@@ -8,6 +8,8 @@ import net.versiongate.api.gate.IGateManager;
 import net.versiongate.api.gate.gate.IPacketGate;
 import net.versiongate.api.gate.version.ProtocolVersion;
 import net.versiongate.api.packet.IPacket;
+import net.versiongate.api.packet.IPacketType;
+import net.versiongate.common.gate.GateType;
 import net.versiongate.common.platform.Platform;
 import org.eclipse.collections.impl.list.mutable.FastList;
 
@@ -28,6 +30,11 @@ public class ConnectionGate implements IConnectionGate {
             final IPacketGate packetGate = (IPacketGate) gate;
             packetGate.translate(packet);
         }
+
+        final IPacketType mappedPacketType = GateType.VERSION1_8.getMappedPacketType(packet.getType()); // TODO figure out how we're gonna do this properly
+        if (mappedPacketType != null) {
+            packet.setType(mappedPacketType);
+        }
     }
 
     @Override
@@ -40,7 +47,6 @@ public class ConnectionGate implements IConnectionGate {
     private void loadRelevantGates(ProtocolVersion protocolVersion) {
         final IGateManager gateManager = Platform.get().getGateManager();
         this.gates.addAll(gateManager.getHandshakingGates());
-
         if (protocolVersion == null) {
             return;
         }

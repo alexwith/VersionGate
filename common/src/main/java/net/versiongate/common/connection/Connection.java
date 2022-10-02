@@ -88,13 +88,13 @@ public class Connection implements IConnection {
         this.completeBuffer(buffer, packet::writeTo);
         System.out.println("Processed: " + packetType + " -> " + bound + ", " + packetId);
 
-        /*if (packetType.getStateApplication() == ProtocolState.PLAY) {
+        if (packetType.getStateApplication() == ProtocolState.PLAY) {
             try {
-                Thread.sleep(900);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }*/
+        }
     }
 
     @Override

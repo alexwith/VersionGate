@@ -41,10 +41,6 @@ public abstract class PacketGate implements IPacketGate {
     @Override
     public void translate(IPacket packet) {
         final IPacketType packetType = packet.getType();
-        final IPacketType mappedPacketType = this.gateType.getMappedPacketType(packetType);
-        if (mappedPacketType != null) {
-            packet.setType(mappedPacketType);
-        }
 
         final IPacketConsumer consumer = this.packetConsumers.get(packetType);
         if (consumer == null) {
