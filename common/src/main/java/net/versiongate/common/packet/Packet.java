@@ -18,7 +18,7 @@ public class Packet implements IPacket {
     private final IConnection connection;
     private final ByteBuf contentBuffer;
     private final List<Object> content = FastList.newList();
-    private final Map<Integer, BufferAdapter> bufferAdapters = UnifiedMap.newMap();
+    private final Map<Integer, BufferAdapter<?>> bufferAdapters = UnifiedMap.newMap();
 
     private IPacketType type;
     private boolean isCancelled;
@@ -72,11 +72,11 @@ public class Packet implements IPacket {
     }
 
     @Override
-    public void schema(BufferAdapter... types) {
+    public void schema(BufferAdapter<?>... types) {
         this.bufferAdapters.clear();
 
         for (int i = 0; i < types.length; i++) {
-            final BufferAdapter type = types[i];
+            final BufferAdapter<?> type = types[i];
             final Object value = this.contentBuffer.isReadable() ? type.read(this.contentBuffer) : null;
             this.content.add(i, value);
             this.bufferAdapters.put(i, type);

@@ -36,7 +36,7 @@ public interface IPacket {
      *
      * @param types The packet schema
      */
-    void schema(BufferAdapter... types);
+    void schema(BufferAdapter<?>... types);
 
     /**
      * Gets a field from the content cache
