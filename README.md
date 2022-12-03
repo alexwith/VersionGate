@@ -2,9 +2,8 @@
 
 **A fast protocol translation platform for Minecraft: Java Edition**
 
-VersionGate aims to be lightweight and have little impact on the latency of the client. Therefore VersionGate only support 1.8, 1.12 and 
-the 
-latest version. 
+VersionGate aims to be lightweight and have little impact on the latency of the client. Therefore VersionGate only supports translations 
+between 1.8, 1.12 and the latest version. 
 
 ## Utilities
 
