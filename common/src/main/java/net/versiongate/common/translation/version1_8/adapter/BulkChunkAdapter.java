@@ -1,4 +1,4 @@
-package net.versiongate.common.translation.version1_8.buffer;
+package net.versiongate.common.translation.version1_8.adapter;
 
 import io.netty.buffer.ByteBuf;
 import net.versiongate.api.buffer.BufferAdapter;

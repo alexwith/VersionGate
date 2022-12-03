@@ -1,4 +1,4 @@
-package net.versiongate.common.translation.version1_12.buffer;
+package net.versiongate.common.translation.version1_12.adapter;
 
 public interface BufferAdapter1_12 {
 

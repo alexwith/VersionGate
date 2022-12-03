@@ -4,9 +4,9 @@ import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.minecraft.chunk.IChunk;
 import net.versiongate.api.packet.IPacket;
 import net.versiongate.common.gate.gate.PacketGate;
-import net.versiongate.common.translation.version1_8.buffer.BufferAdapter1_8;
+import net.versiongate.common.translation.version1_8.adapter.BufferAdapter1_8;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
-import net.versiongate.common.translation.version1_12.buffer.BufferAdapter1_12;
+import net.versiongate.common.translation.version1_12.adapter.BufferAdapter1_12;
 import net.versiongate.common.translation.version1_12.type.OutboundPacket1_12;
 
 public class WorldPacketGate extends PacketGate {

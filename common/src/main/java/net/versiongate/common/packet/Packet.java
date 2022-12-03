@@ -113,6 +113,8 @@ public class Packet implements IPacket {
             throw new IllegalStateException("The PlatformChannelInitializer was null while sending a packet.");
         }
 
+        System.out.println("sending buffer: " + buffer.writerIndex());
+
         final ChannelHandlerContext context = channel.pipeline().context(initializer.getEncoderName());
         context.writeAndFlush(buffer);
     }
