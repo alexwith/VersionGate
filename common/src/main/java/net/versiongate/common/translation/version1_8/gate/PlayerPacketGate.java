@@ -24,13 +24,9 @@ public class PlayerPacketGate extends PacketGate {
 
         this.packetConsumer(OutboundPacket1_8.JOIN_GAME, (packet) -> {
             packet.schema(
-                BufferAdapter.INT,
-                BufferAdapter.UNSIGNED_BYTE,
-                BufferAdapter.BYTE,
-                BufferAdapter.UNSIGNED_BYTE,
-                BufferAdapter.UNSIGNED_BYTE,
-                BufferAdapter.STRING,
-                BufferAdapter.BOOLEAN
+                BufferAdapter.INT, // Entity ID
+                BufferAdapter.UNSIGNED_BYTE, // Gamemode
+                BufferAdapter.BYTE // Dimension (changed to int)
             );
 
             packet.setFieldAdapter(2, BufferAdapter.INT);
