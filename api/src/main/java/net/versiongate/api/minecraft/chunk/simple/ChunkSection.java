@@ -6,7 +6,6 @@ import net.versiongate.api.minecraft.chunk.IChunkSectionLight;
 import net.versiongate.api.minecraft.chunk.IDataPalette;
 import net.versiongate.api.minecraft.chunk.PaletteType;
 
-// Credit ViaVersion
 public class ChunkSection implements IChunkSection {
     private final EnumMap<PaletteType, IDataPalette> palettes = new EnumMap<>(PaletteType.class);
 

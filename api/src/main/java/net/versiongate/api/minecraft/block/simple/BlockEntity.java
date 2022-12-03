@@ -3,7 +3,6 @@ package net.versiongate.api.minecraft.block.simple;
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import net.versiongate.api.minecraft.block.IBlockEntity;
 
-// Credit ViaVersion
 public class BlockEntity implements IBlockEntity {
     private final byte xzIndex;
     private final short y;

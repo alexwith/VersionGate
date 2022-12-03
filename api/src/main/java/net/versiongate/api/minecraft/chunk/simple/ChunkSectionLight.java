@@ -5,7 +5,6 @@ import net.versiongate.api.minecraft.chunk.IChunkSection;
 import net.versiongate.api.minecraft.chunk.IChunkSectionLight;
 import net.versiongate.api.minecraft.chunk.NibbleArray;
 
-// Credit ViaVersion
 public class ChunkSectionLight implements IChunkSectionLight {
     private NibbleArray blockLight;
     private NibbleArray skyLight;

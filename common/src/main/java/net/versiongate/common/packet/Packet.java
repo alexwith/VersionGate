@@ -110,7 +110,7 @@ public class Packet implements IPacket {
         final Channel channel = this.connection.getChannel();
         final PlatformChannelInitializer initializer = Platform.get().getInjector().getChannelInitializer();
         if (initializer == null) {
-            throw new IllegalStateException("The PlatformChannelInitializer is null while sending packet");
+            throw new IllegalStateException("The PlatformChannelInitializer was null while sending a packet.");
         }
 
         final ChannelHandlerContext context = channel.pipeline().context(initializer.getEncoderName());

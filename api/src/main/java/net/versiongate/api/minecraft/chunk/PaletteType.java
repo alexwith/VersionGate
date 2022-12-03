@@ -1,6 +1,5 @@
 package net.versiongate.api.minecraft.chunk;
 
-// Credit ViaVersion
 public enum PaletteType {
     BLOCKS(IChunkSection.SIZE, 8),
     BIOMES(IChunkSection.BIOME_SIZE, 3);

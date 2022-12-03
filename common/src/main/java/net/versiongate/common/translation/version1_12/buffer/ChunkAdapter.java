@@ -1,6 +1,5 @@
 package net.versiongate.common.translation.version1_12.buffer;
 
-import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import io.netty.buffer.ByteBuf;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -52,7 +51,7 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
             }
         }
 
-        return new Chunk(chunkX, chunkZ, groundUp, false, primaryBitmask, sections, biomeData, new ArrayList<CompoundTag>());
+        return new Chunk(chunkX, chunkZ, groundUp, false, primaryBitmask, sections, biomeData, new ArrayList<>());
     }
 
     @Override
@@ -63,7 +62,7 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
         buffer.writeBoolean(chunk.isFullChunk());
         BufferAdapter.VAR_INT.write(buffer, chunk.getBitmask());
 
-        final ByteBuf subBuffer = buffer.alloc().buffer();
+        final ByteBuf tempBuffer = buffer.alloc().buffer();
         try {
             for (int i = 0; i < 16; i++) {
                 final IChunkSection section = chunk.getSections()[i];
@@ -71,22 +70,22 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
                     continue;
                 }
 
-                BufferAdapter1_12.CHUNK_SECTION.write(subBuffer, section);
+                BufferAdapter1_12.CHUNK_SECTION.write(tempBuffer, section);
 
-                section.getLight().writeBlockLight(subBuffer);
+                section.getLight().writeBlockLight(tempBuffer);
                 if (!section.getLight().hasSkyLight()) {
                     continue;
                 }
 
-                section.getLight().writeSkyLight(subBuffer);
+                section.getLight().writeSkyLight(tempBuffer);
             }
 
-            subBuffer.readerIndex(0);
+            tempBuffer.readerIndex(0);
 
-            BufferAdapter.VAR_INT.write(buffer, subBuffer.readableBytes() + (chunk.isBiomeData() ? 256 : 0));
-            buffer.writeBytes(subBuffer);
+            BufferAdapter.VAR_INT.write(buffer, tempBuffer.readableBytes() + (chunk.isBiomeData() ? 256 : 0));
+            buffer.writeBytes(tempBuffer);
         } finally {
-            subBuffer.release();
+            tempBuffer.release();
         }
 
         if (chunk.isBiomeData()) {

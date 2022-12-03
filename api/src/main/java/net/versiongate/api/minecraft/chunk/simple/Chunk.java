@@ -7,7 +7,6 @@ import net.versiongate.api.minecraft.block.IBlockEntity;
 import net.versiongate.api.minecraft.chunk.IChunk;
 import net.versiongate.api.minecraft.chunk.IChunkSection;
 
-// Credit ViaVersion
 public class Chunk implements IChunk {
     protected final int x;
     protected final int z;

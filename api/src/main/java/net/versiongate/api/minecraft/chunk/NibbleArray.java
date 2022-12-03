@@ -2,7 +2,6 @@ package net.versiongate.api.minecraft.chunk;
 
 import java.util.Arrays;
 
-// Credit ViaVersion
 public class NibbleArray {
     private final byte[] handle;
 

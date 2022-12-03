@@ -16,7 +16,7 @@ public class BukkitPlatform extends Platform {
     }
 
     @Override
-    public int getProtocolVersion() { // thank you ViaVersion
+    public int getProtocolVersion() {
         try {
             return NMSUtil.getProtocolVersion();
         } catch (Exception e) {

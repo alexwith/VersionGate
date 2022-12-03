@@ -4,7 +4,6 @@ import net.versiongate.api.minecraft.chunk.IDataPalette;
 import org.eclipse.collections.impl.list.mutable.primitive.IntArrayList;
 import org.eclipse.collections.impl.map.mutable.primitive.IntIntHashMap;
 
-// Credit to ViaVersion
 public class DataPalette implements IDataPalette {
     private final IntArrayList palette;
     private final IntIntHashMap inversePalette;
