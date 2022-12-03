@@ -135,4 +135,9 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
 
         return data;
     }
+
+    @Override
+    public Class<IChunk> outputType() {
+        return IChunk.class;
+    }
 }

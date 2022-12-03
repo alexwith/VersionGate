@@ -1,4 +1,4 @@
-package net.versiongate.common.translation.version1_9.buffer;
+package net.versiongate.common.translation.version1_12.buffer;
 
 import com.github.steveice10.opennbt.tag.builtin.CompoundTag;
 import io.netty.buffer.ByteBuf;
@@ -35,7 +35,7 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
                 continue;
             }
 
-            final IChunkSection section = BufferAdapter1_9.CHUNK_SECTION.read(buffer);
+            final IChunkSection section = BufferAdapter1_12.CHUNK_SECTION.read(buffer);
             sections[i] = section;
 
             section.getLight().readBlockLight(buffer);
@@ -71,7 +71,7 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
                     continue;
                 }
 
-                BufferAdapter1_9.CHUNK_SECTION.write(subBuffer, section);
+                BufferAdapter1_12.CHUNK_SECTION.write(subBuffer, section);
 
                 section.getLight().writeBlockLight(subBuffer);
                 if (!section.getLight().hasSkyLight()) {
@@ -94,5 +94,10 @@ public class ChunkAdapter implements BufferAdapter<IChunk> {
                 buffer.writeByte((byte) biome);
             }
         }
+    }
+
+    @Override
+    public Class<IChunk> outputType() {
+        return IChunk.class;
     }
 }

@@ -16,4 +16,9 @@ public class UUIDAdapter implements BufferAdapter<UUID> {
         buffer.writeLong(value.getMostSignificantBits());
         buffer.writeLong(value.getLeastSignificantBits());
     }
+
+    @Override
+    public Class<UUID> outputType() {
+        return UUID.class;
+    }
 }

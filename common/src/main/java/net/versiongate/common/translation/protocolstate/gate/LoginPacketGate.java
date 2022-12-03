@@ -2,8 +2,8 @@ package net.versiongate.common.translation.protocolstate.gate;
 
 import net.versiongate.api.connection.IConnection;
 import net.versiongate.api.enums.ProtocolState;
+import net.versiongate.api.packet.IPacket;
 import net.versiongate.common.gate.gate.PacketGate;
-import net.versiongate.common.packet.Packet;
 import net.versiongate.common.translation.protocolstate.type.login.InboundPacketLogin;
 import net.versiongate.common.translation.protocolstate.type.login.OutboundPacketLogin;
 
@@ -18,7 +18,7 @@ public class LoginPacketGate extends PacketGate {
 
             packet.cancel();
 
-            final Packet newPacket = new Packet(packet.getConnection(), OutboundPacketLogin.DISCONNECT, null);
+            final IPacket newPacket = this.createPacket(packet.getConnection(), OutboundPacketLogin.DISCONNECT);
             // TODO: this is where we block them in the future if they're on an unwanted version
         });
 

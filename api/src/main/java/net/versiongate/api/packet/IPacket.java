@@ -39,22 +39,30 @@ public interface IPacket {
     void schema(BufferAdapter<?>... types);
 
     /**
-     * Gets a field from the content cache
+     * Reads a field from the content cache
      *
      * @param index The index of the field
      * @param <T>   The type of the field
      * @return The actual field value
      */
-    <T> T getField(int index);
+    <T> T readField(int index);
 
     /**
-     * Sets a field in the content cache
+     * Writes a field in the content cache
      *
      * @param index The index of the field
      * @param value The value of the field
      * @param <T>   The type of the value
      */
-    <T> void setField(int index, T value);
+    <T> void writeField(int index, T value);
+
+    /**
+     * Set field adapter
+     *
+     * @param index
+     * @param type
+     */
+    void setFieldAdapter(int index, BufferAdapter<?> type);
 
     /**
      * Send the packet with force

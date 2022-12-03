@@ -1,4 +1,4 @@
-package net.versiongate.common.translation.version1_9.buffer;
+package net.versiongate.common.translation.version1_12.buffer;
 
 import io.netty.buffer.ByteBuf;
 import net.versiongate.api.buffer.BufferAdapter;
@@ -83,5 +83,10 @@ public class ChunkSectionAdapter implements BufferAdapter<IChunkSection> {
             (sectionIndex) -> (long) blockPalette.getPaletteIndexAt(sectionIndex)
         );
         BufferAdapter.LONG_ARRAY.write(buffer, data);
+    }
+
+    @Override
+    public Class<IChunkSection> outputType() {
+        return IChunkSection.class;
     }
 }

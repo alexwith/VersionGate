@@ -17,7 +17,7 @@ public class StatusPacketGate extends PacketGate {
             );
 
             final IConnection connection = packet.getConnection();
-            final JsonObject response = packet.getField(0);
+            final JsonObject response = packet.readField(0);
             final JsonObject version = response.getAsJsonObject("version");
             final int serverProtocol = version.get("protocol").getAsInt();
             final int connectionProtocol = connection.getProtocolVersion().getId();
@@ -32,7 +32,7 @@ public class StatusPacketGate extends PacketGate {
 
             version.addProperty("protocol", connection.getProtocolVersion().getId());
 
-            packet.setField(0, response);
+            packet.writeField(0, response);
         });
     }
 }

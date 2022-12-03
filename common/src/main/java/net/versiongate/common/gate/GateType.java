@@ -13,12 +13,12 @@ import net.versiongate.common.translation.protocolstate.type.login.InboundPacket
 import net.versiongate.common.translation.protocolstate.type.login.OutboundPacketLogin;
 import net.versiongate.common.translation.protocolstate.type.status.InboundPacketStatus;
 import net.versiongate.common.translation.protocolstate.type.status.OutboundPacketStatus;
+import net.versiongate.common.translation.version1_12.Version1_12;
+import net.versiongate.common.translation.version1_12.type.InboundPacket1_12;
+import net.versiongate.common.translation.version1_12.type.OutboundPacket1_12;
 import net.versiongate.common.translation.version1_8.Version1_8;
 import net.versiongate.common.translation.version1_8.type.InboundPacket1_8;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
-import net.versiongate.common.translation.version1_9.Version1_9;
-import net.versiongate.common.translation.version1_9.type.InboundPacket1_9;
-import net.versiongate.common.translation.version1_9.type.OutboundPacket1_9;
 import org.eclipse.collections.impl.map.mutable.UnifiedMap;
 import org.eclipse.collections.impl.set.mutable.UnifiedSet;
 
@@ -39,11 +39,11 @@ public enum GateType implements IGateType {
         InboundPacket1_8.class,
         OutboundPacket1_8.class
     ),
-    VERSION1_9(
-        ProtocolVersion.VERSION1_9,
-        new Version1_9(),
-        InboundPacket1_9.class,
-        OutboundPacket1_9.class
+    VERSION1_12(
+        ProtocolVersion.VERSION1_12,
+        new Version1_12(),
+        InboundPacket1_12.class,
+        OutboundPacket1_12.class
     );
 
     private final ProtocolVersion protocolVersion;

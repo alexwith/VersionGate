@@ -86,14 +86,14 @@ public class Connection implements IConnection {
         }
 
         this.completeBuffer(buffer, packet::writeTo);
-        System.out.println("Processed: " + packetType + " -> " + bound + ", " + packetId);
+        System.out.println("Processed: " + packetType + " -> " + bound + ", " + packetId + " -> " + buffer.writerIndex());
 
         if (packetType.getStateApplication() == ProtocolState.PLAY) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            Thread.sleep(950);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         }
     }
 

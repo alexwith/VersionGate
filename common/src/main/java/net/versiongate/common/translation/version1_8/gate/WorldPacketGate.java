@@ -6,8 +6,8 @@ import net.versiongate.api.packet.IPacket;
 import net.versiongate.common.gate.gate.PacketGate;
 import net.versiongate.common.translation.version1_8.buffer.BufferAdapter1_8;
 import net.versiongate.common.translation.version1_8.type.OutboundPacket1_8;
-import net.versiongate.common.translation.version1_9.buffer.BufferAdapter1_9;
-import net.versiongate.common.translation.version1_9.type.OutboundPacket1_9;
+import net.versiongate.common.translation.version1_12.buffer.BufferAdapter1_12;
+import net.versiongate.common.translation.version1_12.type.OutboundPacket1_12;
 
 public class WorldPacketGate extends PacketGate {
 
@@ -19,14 +19,14 @@ public class WorldPacketGate extends PacketGate {
             );
             packet.cancel();
 
-            final IChunk[] chunks = packet.getField(0);
+            final IChunk[] chunks = packet.readField(0);
             for (final IChunk chunk : chunks) {
-                final IPacket chunkPacket = this.createPacket(packet.getConnection(), OutboundPacket1_9.CHUNK_DATA);
+                final IPacket chunkPacket = this.createPacket(packet.getConnection(), OutboundPacket1_12.CHUNK_DATA);
                 chunkPacket.schema(
-                    BufferAdapter1_9.CHUNK
+                    BufferAdapter1_12.CHUNK
                 );
 
-                chunkPacket.setField(0, chunk);
+                chunkPacket.writeField(0, chunk);
                 chunkPacket.send();
             }
         });
@@ -36,24 +36,24 @@ public class WorldPacketGate extends PacketGate {
                 BufferAdapter1_8.CHUNK
             );
 
-            final IChunk chunk = packet.getField(0);
+            final IChunk chunk = packet.readField(0);
             if (chunk.isFullChunk() && chunk.getBitmask() == 0) { // Unload chunk
-                packet.setType(OutboundPacket1_9.UNLOAD_CHUNK);
+                packet.setType(OutboundPacket1_12.UNLOAD_CHUNK);
                 packet.schema(
                     BufferAdapter.INT,
                     BufferAdapter.INT
                 );
 
-                packet.setField(0, chunk.getX());
-                packet.setField(1, chunk.getX());
+                packet.writeField(0, chunk.getX());
+                packet.writeField(1, chunk.getX());
                 return;
             }
 
             packet.schema(
-                BufferAdapter1_9.CHUNK
+                BufferAdapter1_12.CHUNK
             );
 
-            packet.setField(0, chunk);
+            packet.writeField(0, chunk);
         });
     }
 }

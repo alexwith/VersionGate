@@ -18,4 +18,9 @@ public class JsonObjectAdapter implements BufferAdapter<JsonObject> {
     public void write(ByteBuf buffer, JsonObject value) {
         BufferAdapter.STRING.write(buffer, value.toString());
     }
+
+    @Override
+    public Class<JsonObject> outputType() {
+        return JsonObject.class;
+    }
 }

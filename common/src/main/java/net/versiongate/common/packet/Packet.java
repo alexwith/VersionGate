@@ -63,11 +63,12 @@ public class Packet implements IPacket {
         BufferAdapter.VAR_INT.write(buffer, this.type.getId());
 
         for (int i = 0; i < this.content.size(); i++) {
-            final BufferAdapter type = this.bufferAdapters.get(i);
-            final Object value = this.content.get(i);
-            type.write(buffer, value);
-        }
+            final BufferAdapter adapter = this.bufferAdapters.get(i);
+            final Object value = this.transformValue(adapter, this.content.get(i));
 
+            adapter.write(buffer, value);
+
+        }
         buffer.writeBytes(this.contentBuffer);
     }
 
@@ -76,22 +77,27 @@ public class Packet implements IPacket {
         this.bufferAdapters.clear();
 
         for (int i = 0; i < types.length; i++) {
-            final BufferAdapter<?> type = types[i];
-            final Object value = this.contentBuffer.isReadable() ? type.read(this.contentBuffer) : null;
+            final BufferAdapter<?> adapter = types[i];
+            final Object value = this.contentBuffer.isReadable() ? adapter.read(this.contentBuffer) : null;
             this.content.add(i, value);
-            this.bufferAdapters.put(i, type);
+            this.bufferAdapters.put(i, adapter);
         }
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T getField(int index) {
+    public <T> T readField(int index) {
         return (T) this.content.get(index);
     }
 
     @Override
-    public <T> void setField(int index, T value) {
+    public <T> void writeField(int index, T value) {
         this.content.set(index, value);
+    }
+
+    @Override
+    public void setFieldAdapter(int index, BufferAdapter<?> adapter) {
+        this.bufferAdapters.put(index, adapter);
     }
 
     @Override
@@ -109,6 +115,14 @@ public class Packet implements IPacket {
 
         final ChannelHandlerContext context = channel.pipeline().context(initializer.getEncoderName());
         context.writeAndFlush(buffer);
+    }
+
+    private Object transformValue(BufferAdapter<?> adapter, Object value) {
+        if (adapter.outputType().isAssignableFrom(value.getClass())) {
+            return value;
+        }
+
+        return adapter.transform(value);
     }
 
     private ByteBuf toBuffer() {

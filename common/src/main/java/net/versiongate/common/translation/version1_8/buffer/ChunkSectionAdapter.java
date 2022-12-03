@@ -41,4 +41,9 @@ public class ChunkSectionAdapter implements BufferAdapter<IChunkSection> {
             }
         }
     }
+
+    @Override
+    public Class<IChunkSection> outputType() {
+        return IChunkSection.class;
+    }
 }

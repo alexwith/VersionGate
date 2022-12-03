@@ -36,4 +36,9 @@ public class VarLongAdapter implements BufferAdapter<Long> {
             buffer.writeByte(part);
         } while (value != 0);
     }
+
+    @Override
+    public Class<Long> outputType() {
+        return Long.class;
+    }
 }

@@ -102,4 +102,9 @@ public class BulkChunkAdapter implements BufferAdapter<IChunk[]> {
             buffer.readBytes(this.data);
         }
     }
+
+    @Override
+    public Class<IChunk[]> outputType() {
+        return IChunk[].class;
+    }
 }

@@ -18,15 +18,15 @@ public class HandshakePacketGate extends PacketGate {
                 BufferAdapter.VAR_INT
             );
 
-            final int connectionProtocol = packet.getField(0);
-            final int state = packet.getField(3);
+            final int connectionProtocol = packet.readField(0);
+            final int state = packet.readField(3);
 
             final IConnection connection = packet.getConnection();
             connection.setProtocolVersion(connectionProtocol);
             connection.setProtocolState(ProtocolState.values()[state]);
 
             final int serverProtocol = this.gateManager.getProtocolVersion().getId();
-            packet.setField(0, serverProtocol);
+            packet.writeField(0, serverProtocol);
         });
     }
 }

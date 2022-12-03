@@ -1,9 +1,9 @@
-package net.versiongate.common.translation.version1_9.type;
+package net.versiongate.common.translation.version1_12.type;
 
 import net.versiongate.api.enums.PacketBound;
 import net.versiongate.api.packet.IPacketType;
 
-public enum OutboundPacket1_9 implements IPacketType {
+public enum OutboundPacket1_12 implements IPacketType {
 
     SPAWN_ENTITY(0x00),
     SPAWN_EXPERIENCE_ORB(0x01),
@@ -42,50 +42,53 @@ public enum OutboundPacket1_9 implements IPacketType {
     SPAWN_PARTICLE(0x22),
     JOIN_GAME(0x23),
     MAP_DATA(0x24),
-    ENTITY_POSITION(0x25),
-    ENTITY_POSITION_AND_ROTATION(0x26),
-    ENTITY_ROTATION(0x27),
-    ENTITY_MOVEMENT(0x28),
+    ENTITY_MOVEMENT(0x25),
+    ENTITY_POSITION(0x26),
+    ENTITY_POSITION_AND_ROTATION(0x27),
+    ENTITY_ROTATION(0x28),
     VEHICLE_MOVE(0x29),
     OPEN_SIGN_EDITOR(0x2A),
-    PLAYER_ABILITIES(0x2B),
-    COMBAT_EVENT(0x2C),
-    PLAYER_INFO(0x2D),
-    PLAYER_POSITION(0x2E),
-    USE_BED(0x2F),
-    DESTROY_ENTITIES(0x30),
-    REMOVE_ENTITY_EFFECT(0x31),
-    RESOURCE_PACK(0x32),
-    RESPAWN(0x33),
-    ENTITY_HEAD_LOOK(0x34),
-    WORLD_BORDER(0x35),
-    CAMERA(0x36),
-    HELD_ITEM_CHANGE(0x37),
-    DISPLAY_SCOREBOARD(0x38),
-    ENTITY_METADATA(0x39),
-    ATTACH_ENTITY(0x3A),
-    ENTITY_VELOCITY(0x3B),
-    ENTITY_EQUIPMENT(0x3C),
-    SET_EXPERIENCE(0x3D),
-    UPDATE_HEALTH(0x3E),
-    SCOREBOARD_OBJECTIVE(0x3F),
-    SET_PASSENGERS(0x40),
-    TEAMS(0x41),
-    UPDATE_SCORE(0x42),
-    SPAWN_POSITION(0x43),
-    TIME_UPDATE(0x44),
-    TITLE(0x45),
-    UPDATE_SIGN(0x46),
-    SOUND(0x47),
-    TAB_LIST(0x48),
-    COLLECT_ITEM(0x49),
-    ENTITY_TELEPORT(0x4A),
-    ENTITY_PROPERTIES(0x4B),
-    ENTITY_EFFECT(0x4C);
+    CRAFT_RECIPE_RESPONSE(0x2B),
+    PLAYER_ABILITIES(0x2C),
+    COMBAT_EVENT(0x2D),
+    PLAYER_INFO(0x2E),
+    PLAYER_POSITION(0x2F),
+    USE_BED(0x30),
+    UNLOCK_RECIPES(0x31),
+    DESTROY_ENTITIES(0x32),
+    REMOVE_ENTITY_EFFECT(0x33),
+    RESOURCE_PACK(0x34),
+    RESPAWN(0x35),
+    ENTITY_HEAD_LOOK(0x36),
+    SELECT_ADVANCEMENTS_TAB(0x37),
+    WORLD_BORDER(0x38),
+    CAMERA(0x39),
+    HELD_ITEM_CHANGE(0x3A),
+    DISPLAY_SCOREBOARD(0x3B),
+    ENTITY_METADATA(0x3C),
+    ATTACH_ENTITY(0x3D),
+    ENTITY_VELOCITY(0x3E),
+    ENTITY_EQUIPMENT(0x3F),
+    SET_EXPERIENCE(0x40),
+    UPDATE_HEALTH(0x41),
+    SCOREBOARD_OBJECTIVE(0x42),
+    SET_PASSENGERS(0x43),
+    TEAMS(0x44),
+    UPDATE_SCORE(0x45),
+    SPAWN_POSITION(0x46),
+    TIME_UPDATE(0x47),
+    TITLE(0x48),
+    SOUND(0x49),
+    TAB_LIST(0x4A),
+    COLLECT_ITEM(0x4B),
+    ENTITY_TELEPORT(0x4C),
+    ADVANCEMENTS(0x4D),
+    ENTITY_PROPERTIES(0x4E),
+    ENTITY_EFFECT(0x4F);
 
     private final int id;
 
-    OutboundPacket1_9(int id) {
+    OutboundPacket1_12(int id) {
         this.id = id;
     }
 

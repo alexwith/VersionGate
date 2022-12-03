@@ -21,4 +21,9 @@ public class StringAdapter implements BufferAdapter<String> {
         BufferAdapter.VAR_INT.write(buffer, bytes.length);
         buffer.writeBytes(bytes);
     }
+
+    @Override
+    public Class<String> outputType() {
+        return String.class;
+    }
 }

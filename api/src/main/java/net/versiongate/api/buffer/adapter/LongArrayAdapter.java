@@ -23,4 +23,9 @@ public class LongArrayAdapter implements BufferAdapter<long[]> {
             buffer.writeLong(value);
         }
     }
+
+    @Override
+    public Class<long[]> outputType() {
+        return long[].class;
+    }
 }

@@ -37,4 +37,9 @@ public class VarIntAdapter implements BufferAdapter<Integer> {
             value >>>= 7;
         }
     }
+
+    @Override
+    public Class<Integer> outputType() {
+        return Integer.class;
+    }
 }
