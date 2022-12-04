@@ -11,11 +11,6 @@ public class BukkitPlatform extends Platform {
     }
 
     @Override
-    public void load() {
-        super.load();
-    }
-
-    @Override
     public int getProtocolVersion() {
         try {
             return NMSUtil.getProtocolVersion();

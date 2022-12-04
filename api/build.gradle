@@ -2,9 +2,6 @@ plugins {
     id 'java'
 }
 
-group 'net.versiongate'
-version '0.0.1'
-
 dependencies {
     compileOnly(libs.bundles.common)
 

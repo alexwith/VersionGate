@@ -3,9 +3,6 @@ plugins {
     id 'checkstyle'
 }
 
-group 'net.versiongate'
-version '0.0.1'
-
 repositories {
     mavenCentral()
 }
@@ -24,4 +21,7 @@ allprojects {
         mavenCentral()
         maven({ url = "https://repo.viaversion.com" })
     }
+
+    group 'net.versiongate'
+    version '0.0.1'
 }
