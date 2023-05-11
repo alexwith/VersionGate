@@ -2,6 +2,7 @@ package net.versiongate.common.connection;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
+import java.util.Arrays;
 import java.util.function.Consumer;
 import net.versiongate.api.buffer.BufferAdapter;
 import net.versiongate.api.connection.IConnection;
@@ -60,7 +61,7 @@ public class Connection implements IConnection {
     }
 
     @Override
-    public void translate(ByteBuf buffer, PacketBound bound) {
+    public void translate(ByteBuf buffer, PacketBound bound, boolean lengthPrefixed) {
         if (!buffer.isReadable()) {
             return;
         }
@@ -69,13 +70,24 @@ public class Connection implements IConnection {
             return;
         }
 
+        final byte packetLength = lengthPrefixed ? buffer.readByte() : -1;
+
+        final byte[] data = new byte[buffer.readableBytes()];
+        buffer.getBytes(buffer.readerIndex(), data);
+
+        System.out.println(String.format("length: %d, dataLength: %d, data: %s", data.length, packetLength, Arrays.toString(data)));
+
+        final int preReadingLength = buffer.readableBytes();
         final int packetId = BufferAdapter.VAR_INT.read(buffer);
         final IPacketType packetType = PacketTypes.getPacketType(GateType.VERSION1_8, this.protocolState, bound, packetId);
+
+        System.out.println("packet: 0x" + Integer.toHexString(packetId) + " - " + packetType + " -> " + this.protocolState + " -> " + bound);
+
         if (packetType == null) {
             this.completeBuffer(buffer, (completedBuffer) -> {
                 BufferAdapter.VAR_INT.write(completedBuffer, packetId);
                 completedBuffer.writeBytes(buffer);
-            });
+            }, packetLength, preReadingLength);
             return;
         }
 
@@ -85,15 +97,15 @@ public class Connection implements IConnection {
             return;
         }
 
-        this.completeBuffer(buffer, packet::writeTo);
-        System.out.println("Processed: " + packetType + " -> " + bound + ", " + packetId + " -> " + buffer.writerIndex());
+        this.completeBuffer(buffer, packet::writeTo, packetLength, preReadingLength);
+        System.out.println("Processed: " + packetType + " -> " + bound + ", 0x" + Integer.toHexString(packetId) + " -> " + buffer.writerIndex());
 
         if (packetType.getStateApplication() == ProtocolState.PLAY) {
-        try {
-            Thread.sleep(950);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(950);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -102,11 +114,19 @@ public class Connection implements IConnection {
         return true;
     }
 
-    private void completeBuffer(ByteBuf buffer, Consumer<ByteBuf> consumer) {
+    private void completeBuffer(ByteBuf buffer, Consumer<ByteBuf> consumer, byte packetLength, int preReadingLength) {
         final ByteBuf completedBuffer = buffer.alloc().buffer();
         try {
             consumer.accept(completedBuffer);
-            buffer.clear().writeBytes(completedBuffer);
+            buffer.clear();
+
+            if (packetLength != -1) {
+                final int postWriteLength = completedBuffer.readableBytes();
+                final int lengthOffset = postWriteLength - preReadingLength;
+                buffer.writeByte(packetLength + lengthOffset);
+            }
+
+            buffer.writeBytes(completedBuffer);
         } finally {
             completedBuffer.release();
         }

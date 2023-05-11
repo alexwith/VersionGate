@@ -1,24 +1,28 @@
 package net.versiongate.standalone.handler;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
+import java.net.SocketAddress;
 import net.versiongate.api.connection.IConnection;
-import net.versiongate.api.connection.IConnectionManager;
-import net.versiongate.common.platform.PlatformChannelInitializer;
+import net.versiongate.common.connection.ConnectionManager;
 
-public class StandaloneChannelInitializer extends PlatformChannelInitializer {
+public class StandaloneChannelInitializer extends ChannelInitializer<Channel> {
+    private final SocketAddress address;
+    private final ConnectionManager connectionManager;
 
-    public StandaloneChannelInitializer(IConnectionManager connectionManager, ChannelInitializer<?> initializer, String decoderName, String encoderName) {
-        super(connectionManager, initializer, decoderName, encoderName);
+    public StandaloneChannelInitializer(SocketAddress address) {
+        this.address = address;
+        this.connectionManager = new ConnectionManager();
     }
 
     @Override
-    public void pipelineEncoder(IConnection connection, ChannelPipeline pipeline) {
+    protected void initChannel(Channel channel) {
+        final IConnection connection = this.connectionManager.notifyConnection(channel);
+        connection.setProtocolVersion(340);
 
-    }
-
-    @Override
-    public void pipelineDecoder(IConnection connection, ChannelPipeline pipeline) {
-
+        channel.pipeline()
+            .addLast(new StandaloneEncoder(connection))
+            .addLast(new StandaloneDecoder(connection))
+            .addLast(new StandaloneFrontendHandler(this.address));
     }
 }

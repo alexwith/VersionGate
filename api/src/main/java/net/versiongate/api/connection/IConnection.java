@@ -26,10 +26,15 @@ public interface IConnection {
     /**
      * Starts and ends the translation pipeline
      *
-     * @param buffer The buffer allocated by the pipeline codec
-     * @param bound  Where the packet is bound.
+     * @param buffer   The buffer allocated by the pipeline codec
+     * @param bound    Where the packet is bound.
+     * @param lengthPrefixed Is the buffer prefixed with the length of the packet, i.e. proxy level packets
      */
-    void translate(ByteBuf buffer, PacketBound bound);
+    void translate(ByteBuf buffer, PacketBound bound, boolean lengthPrefixed);
+
+    default void translate(ByteBuf buffer, PacketBound bound) {
+        this.translate(buffer, bound, false);
+    }
 
     /**
      * If the connection should translate packets or not
