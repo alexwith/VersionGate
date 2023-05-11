@@ -70,7 +70,7 @@ public class Connection implements IConnection {
             return;
         }
 
-        final byte packetLength = lengthPrefixed ? buffer.readByte() : -1;
+        final int packetLength = lengthPrefixed ? BufferAdapter.VAR_INT.read(buffer) : -1;
 
         final byte[] data = new byte[buffer.readableBytes()];
         buffer.getBytes(buffer.readerIndex(), data);
@@ -114,7 +114,7 @@ public class Connection implements IConnection {
         return true;
     }
 
-    private void completeBuffer(ByteBuf buffer, Consumer<ByteBuf> consumer, byte packetLength, int preReadingLength) {
+    private void completeBuffer(ByteBuf buffer, Consumer<ByteBuf> consumer, int packetLength, int preReadingLength) {
         final ByteBuf completedBuffer = buffer.alloc().buffer();
         try {
             consumer.accept(completedBuffer);
@@ -123,7 +123,7 @@ public class Connection implements IConnection {
             if (packetLength != -1) {
                 final int postWriteLength = completedBuffer.readableBytes();
                 final int lengthOffset = postWriteLength - preReadingLength;
-                buffer.writeByte(packetLength + lengthOffset);
+                BufferAdapter.VAR_INT.write(buffer, packetLength + lengthOffset);
             }
 
             buffer.writeBytes(completedBuffer);
