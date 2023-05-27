@@ -1,4 +1,4 @@
-package net.versiongate.standalone.handler;
+package net.versiongate.standalone.connection;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -10,12 +10,12 @@ import io.netty.channel.ChannelOption;
 import java.net.SocketAddress;
 import net.versiongate.standalone.util.ChannelUtil;
 
-public class StandaloneFrontendHandler extends ChannelInboundHandlerAdapter {
+public class StandaloneConnection extends ChannelInboundHandlerAdapter {
     private final SocketAddress address;
 
     private Channel outboundChannel;
 
-    public StandaloneFrontendHandler(SocketAddress address) {
+    public StandaloneConnection(SocketAddress address) {
         this.address = address;
     }
 

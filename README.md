@@ -11,3 +11,4 @@ between 1.8, 1.12 and the latest version.
 - [Eclipse Collections](https://www.eclipse.org/collections/)
 - [Gson](https://github.com/google/gson)
 - [ViaVersion](https://github.com/ViaVersion/ViaVersion) (For the idea / knowledge)
+- [Velocity](https://github.com/PaperMC/Velocity) (Proxy knowledge)

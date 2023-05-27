@@ -1,4 +1,4 @@
-package net.versiongate.standalone.handler;
+package net.versiongate.standalone.connection;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;

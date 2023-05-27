@@ -17,7 +17,7 @@ public class ByteArrayAdapter implements BufferAdapter<byte[]> {
     @Override
     public void write(ByteBuf buffer, byte[] value) {
         BufferAdapter.VAR_INT.write(buffer, value.length);
-        buffer.writeBytes(buffer);
+        buffer.writeBytes(value);
     }
 
     @Override
