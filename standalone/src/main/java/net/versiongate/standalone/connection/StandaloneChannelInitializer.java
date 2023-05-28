@@ -34,8 +34,8 @@ public class StandaloneChannelInitializer extends ChannelInitializer<Channel> {
             .addLast(FRAME_DECODER_NAME, new FrameDecoder())
             .addLast(new ReadTimeoutHandler(READ_TIMEOUT))
             .addLast(FRAME_ENCODER_NAME, new FrameEncoder())
-            .addLast(new StandaloneDecoder(channel, connection))
+            .addLast(new StandaloneDecoder(connection))
             .addLast(new StandaloneEncoder(connection))
-            .addLast(new StandaloneConnection(this.address));
+            .addLast(new StandaloneConnection(this.address, connection, channel));
     }
 }

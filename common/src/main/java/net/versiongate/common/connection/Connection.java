@@ -73,7 +73,7 @@ public class Connection implements IConnection {
         final byte[] data = new byte[buffer.readableBytes()];
         buffer.getBytes(buffer.readerIndex(), data);
 
-        System.out.println(String.format("length: %d, data: %s", data.length, Arrays.toString(data)));
+        //System.out.println(String.format("length: %d, data: %s", data.length, Arrays.toString(data)));
 
         final int packetId = BufferAdapter.VAR_INT.read(buffer);
         final IPacketType packetType = PacketTypes.getPacketType(GateType.VERSION1_8, this.protocolState, bound, packetId);
@@ -98,13 +98,13 @@ public class Connection implements IConnection {
         this.completeBuffer(buffer, packet::writeTo);
         //System.out.println("Processed: " + packetType + " -> " + bound + ", 0x" + Integer.toHexString(packetId) + " -> " + buffer.writerIndex());
 
-        if (packetType.getStateApplication() == ProtocolState.PLAY) {
+        /*if (packetType.getStateApplication() == ProtocolState.PLAY) {
             try {
                 Thread.sleep(950);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     @Override

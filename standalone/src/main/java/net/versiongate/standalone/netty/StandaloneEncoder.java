@@ -22,7 +22,6 @@ public class StandaloneEncoder extends MessageToByteEncoder<Object> {
         }
 
         final ByteBuf packet = (ByteBuf) message;
-
         BufferAdapter.VAR_INT.read(packet); // read the prefixed length, the FrameEncoder adds this after
 
         final ByteBuf translationBuffer = context.alloc().buffer();
